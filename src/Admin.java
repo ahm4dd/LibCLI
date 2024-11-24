@@ -1,5 +1,9 @@
 public class Admin extends User{
 
+    Admin(int userId, String username, String password, String email, String userType) {
+        super(userId, username, password, email, userType);
+    }
+
     public void accessLibrarySystem() {
         System.out.println("Admin can access library system.");
     }
