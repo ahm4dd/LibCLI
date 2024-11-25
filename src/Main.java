@@ -7,7 +7,7 @@ public class Main {
         UserService userService = new UserService();
         User user = userService.getUserById(1);
         ArrayList<User> users = (ArrayList<User>) userService.getAllUsers();
-        System.out.println(users.get(0).getPassword());
+        System.out.println(users.get(0).getUsername());
 
     }
 }

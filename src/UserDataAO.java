@@ -38,6 +38,7 @@ public class UserDataAO {
             if(oldPassword.equalsIgnoreCase(resultSet1.getString("password"))){
                 String query2 = "Update users set password = ? where usersId = "+userId;
                 PreparedStatement stmt2 = DBconnector.conn.prepareStatement(query2);
+                stmt2.setString(1,newPassword);
                 int resultSet2 = stmt2.executeUpdate();
                 System.out.println("Password changed successfully!");
             }
@@ -150,6 +151,8 @@ public class UserDataAO {
     public boolean authenticateUser(String username, String password) throws SQLException {
         String query = "Select * from users where username = ? and password = ?";
         PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
+        stmt.setString(1,username);
+        stmt.setString(2,password);
         ResultSet resultSet = stmt.executeQuery();
         while(resultSet.next())
         {
