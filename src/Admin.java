@@ -1,18 +1,20 @@
 import org.w3c.dom.ls.LSOutput;
 
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
 import java.sql.*;
 import java.util.Scanner;
 public class Admin extends User{
     private UserDataAO userDataAO = new UserDataAO();
     private BookDataAO bookDataAO = new BookDataAO();
+
     Admin(int userId, String username, String password, String email, String userType) {
         super(userId, username, password, email, userType);
     }
 
     public void accessLibrarySystem() throws SQLException {
         System.out.println("1.Add book 2.Remove book 3.Manage user 4.Update book 5.View all users: ");
-
         {
             Scanner scanner = new Scanner(System.in);
             int option = scanner.nextInt();
@@ -21,7 +23,8 @@ public class Admin extends User{
                 case 1 -> addBook();
                 case 2 -> removeBook();
                 case 3 -> manageMember();
-
+                case 4 -> updateBook();
+                case 5 -> viewAllUsers();
             }
         }
     }
@@ -118,12 +121,29 @@ public class Admin extends User{
                     String newAuthor = scanner.next();
                     bookDataAO.updateBookAuthor(book.getBookId(),newAuthor);
                 }
+
+                case 3 ->
+                {
+                    System.out.println("Enter new ISBN: ");
+                    String newIsbn = scanner.next();
+                    bookDataAO.updateBookIsbn(book.getBookId(),newIsbn);
+                }
+
+                case 4 ->
+                {
+                    System.out.println("Enter new available copies: ");
+                    int newAvailableCopies = scanner.nextInt();
+                    bookDataAO.updateAvailableCopies(book.getBookId(),newAvailableCopies);
+                }
             }
         }
     }
 
-    public void viewAllUsers() {
-
+    public void viewAllUsers() throws SQLException {
+        List<User> users = userDataAO.getAllUsers();
+        for(User user : users)
+        {
+            System.out.println("------------------------------\nUser Id: "+ user.getUserId() +"\nUsername: "+ user.getUsername()+"\nPassword: " + user.getPassword() + "\nEmail: "+ user.getEmail());
+        }
     }
-
 }

@@ -36,6 +36,10 @@ public class BookService {
         return bookDataAO.searchBooks(keyword);
     }
 
+    public Book searchBooksByIsbn(String isbn) throws SQLException {
+        return bookDataAO.searchBooksByIsbn(isbn);
+    }
+
     public boolean checkIfBookIsAvailable(int bookId) throws SQLException {
         return bookDataAO.checkIfBookIsAvailable(bookId);
     }

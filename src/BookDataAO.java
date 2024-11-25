@@ -120,6 +120,22 @@ public class BookDataAO {
         return books;
     }
 
+    public Book searchBooksByIsbn(String isbn) throws SQLException {
+        String query = "select * from books where isbn = "+isbn;
+        Statement stmt = DBconnector.conn.createStatement();
+        ResultSet resultSet = stmt.executeQuery(query);
+        while(resultSet.next())
+        {
+            int book_id = resultSet.getInt("book_id");
+            String title = resultSet.getString("title");
+            String author = resultSet.getString("author");
+            int availableCopies = resultSet.getInt("available_copies");
+            Book book = new Book(book_id,title,author,isbn,availableCopies);
+            return book;
+        }
+        return null;
+    }
+
     public boolean checkIfBookIsAvailable(int bookId) throws SQLException {
         String query = "select * from books where book_id = ?";
         PreparedStatement stmt = DBconnector.conn.prepareStatement(query);

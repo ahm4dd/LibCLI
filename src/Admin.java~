@@ -1,5 +1,7 @@
 import org.w3c.dom.ls.LSOutput;
 
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
 import java.sql.*;
 import java.util.Scanner;
@@ -12,7 +14,6 @@ public class Admin extends User{
 
     public void accessLibrarySystem() throws SQLException {
         System.out.println("1.Add book 2.Remove book 3.Manage user 4.Update book 5.View all users: ");
-
         {
             Scanner scanner = new Scanner(System.in);
             int option = scanner.nextInt();
@@ -20,6 +21,9 @@ public class Admin extends User{
             {
                 case 1 -> addBook();
                 case 2 -> removeBook();
+                case 3 -> manageMember();
+                case 4 -> updateBook();
+                case 5 -> viewAllUsers();
             }
         }
     }
@@ -81,34 +85,64 @@ public class Admin extends User{
                     String newEmail = scanner.next();
                     userDataAO.updateEmail(user.getUserId(),user.getEmail(),newEmail);
                 }
-                default -> System.out.println("Invaild choice!");
+                default -> System.out.println("Invalid choice!");
             }
         }
+    }
 
-        //String query = "Select * from users where user_id =" + userId;
-        //Statement stmt = DBconnector.conn.createStatement();
-
-        //ResultSet resultSet = stmt.executeQuery(query);
-        /*while(resultSet.next())
+    public void updateBook() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter book id: ");
+        int bookId = scanner.nextInt();
+        Book book = bookDataAO.getBookById(bookId);
+        if(book == null)
         {
-            if(resultSet.getString("role").equalsIgnoreCase("Admin"))
+            System.out.println("Couldn't find the book provided!");
+        }
+        else
+        {
+            System.out.println("Book id: "+book.getBookId()+"\nTitle: "+book.getTitle()+"\nAuthor: "+book.getAuthor()+"ISBN: "+book.getIsbn()+"\nAvailable copies: "+book.getAvailableBooks());
+            System.out.println("\n1.Enter what you want to change 1.Title 2.Author 3.ISBN 4.Available copies: ");
+            int option = scanner.nextInt();
+
+            switch (option)
             {
-                System.out.println("Cannot display an admin user!");
+                case 1 ->
+                {
+                    System.out.println("Enter new title: ");
+                    String newTitle = scanner.next();
+                    bookDataAO.updateBookTitle(book.getBookId(),newTitle);
+                }
+
+                case 2 ->
+                {
+                    System.out.println("Enter new author: ");
+                    String newAuthor = scanner.next();
+                    bookDataAO.updateBookAuthor(book.getBookId(),newAuthor);
+                }
+
+                case 3 ->
+                {
+                    System.out.println("Enter new ISBN: ");
+                    String newIsbn = scanner.next();
+                    bookDataAO.updateBookIsbn(book.getBookId(),newIsbn);
+                }
+
+                case 4 ->
+                {
+                    System.out.println("Enter new available copies: ");
+                    int newAvailableCopies = scanner.nextInt();
+                    bookDataAO.updateAvailableCopies(book.getBookId(),newAvailableCopies);
+                }
             }
-            else
-            {
-                System.out.println("User id: "+resultSet.getString("user_id")+"\nUsername: "+resultSet.getString("username")+"\nPassword: "+resultSet.getString("password")+"\nEmail: "+resultSet.getString("email"));
-
-            }
-        }*/
+        }
     }
 
-    public void updateBook(Book book) {
-
+    public void viewAllUsers() throws SQLException {
+        List<User> users = userDataAO.getAllUsers();
+        for(User user : users)
+        {
+            System.out.println("------------------------------\nUser Id: "+ user.getUserId() +"\nUsername: "+ user.getUsername()+"\nPassword: " + user.getPassword() + "\nEmail: "+ user.getEmail());
+        }
     }
-
-    public void viewAllUsers() {
-
-    }
-
 }

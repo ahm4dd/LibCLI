@@ -12,6 +12,14 @@ public class UserService {
         userDataAO.updatePassword(userId,oldPassword,newPassword);
     }
 
+    public void updateUsername(int userId, String oldUsername, String newUsername) throws SQLException {
+        userDataAO.updateUsername(userId,oldUsername,newUsername);
+    }
+
+    public void updateEmail(int userId, String oldEmail, String newEmail) throws SQLException {
+        userDataAO.updateEmail(userId,oldEmail,newEmail);
+    }
+
     public void deleteUser(User user) throws SQLException {
         userDataAO.deleteUser(user);
     }
