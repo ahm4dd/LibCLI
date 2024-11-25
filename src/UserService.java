@@ -20,8 +20,8 @@ public class UserService {
         userDataAO.updateEmail(userId,oldEmail,newEmail);
     }
 
-    public void deleteUser(User user) throws SQLException {
-        userDataAO.deleteUser(user);
+    public void deleteUser(int userId) throws SQLException {
+        userDataAO.deleteUser(userId);
     }
 
     public User getUserById(int userId) throws SQLException {

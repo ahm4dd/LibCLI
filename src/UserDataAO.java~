@@ -92,10 +92,10 @@ public class UserDataAO {
         }
     }
 
-    public void deleteUser(int userId) throws SQLException {
-        String query = "delete from users where user_id = ?";
+    public void deleteUser(User user) throws SQLException {
+        String query = "Select * from users where username = ?";
         PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
-        stmt.setInt(1, userId);
+        stmt.setString(1, user.getUsername());
         int resultSet = stmt.executeUpdate();
     }
 
