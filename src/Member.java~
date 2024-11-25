@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Member extends User{
-    private UserService userService = new UserService();
+
     Member(int userId, String username, String password, String email, String userType) {
         super(userId, username, password, email, userType);
     }
@@ -10,11 +10,11 @@ public class Member extends User{
         System.out.println("Member can access library system.");
     }
 
-    public void borrowBook() {
+    public void borrowBook(int bookId) {
 
     }
 
-    public void returnBook() {
+    public void returnBook(int bookId) {
 
     }
 
@@ -26,7 +26,7 @@ public class Member extends User{
         return null;
     }
 
-    public boolean checkIfBookIsAvailable() {
+    public boolean checkIfBookIsAvailable(int bookId) {
         return false;
     }
 }

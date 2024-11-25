@@ -14,7 +14,7 @@ public class Admin extends User{
     }
 
     public void accessLibrarySystem() throws SQLException {
-        System.out.println("1.Add book 2.Remove book 3.Manage user 4.Update book 5.View all users: ");
+        System.out.println("1.Add book 2.Remove book 3.Manage user 4.Update book 5.View all users 6.Search book 7.View all books 8.View transactions: ");
         {
             Scanner scanner = new Scanner(System.in);
             int option = scanner.nextInt();
@@ -145,5 +145,17 @@ public class Admin extends User{
         {
             System.out.println("------------------------------\nUser Id: "+ user.getUserId() +"\nUsername: "+ user.getUsername()+"\nPassword: " + user.getPassword() + "\nEmail: "+ user.getEmail());
         }
+    }
+
+    public void searchBook() throws SQLException {
+
+    }
+
+    public void viewAllBooks() throws SQLException {
+
+    }
+
+    public void viewTransactions() throws SQLException {
+
     }
 }
