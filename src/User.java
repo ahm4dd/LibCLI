@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 abstract public class User {
     private int userId;
     private String username;
@@ -52,4 +53,6 @@ abstract public class User {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+
+    abstract void accessLibrarySystem() throws SQLException;
 }

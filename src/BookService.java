@@ -1,17 +1,31 @@
+import java.sql.SQLException;
 import java.util.List;
 
 public class BookService {
+    private BookDataAO bookDataAO = new BookDataAO();
 
-    public void addBook(Book book) {
+    public void addBook(String title, String author, String isbn, int availableCopies) throws SQLException {
+        bookDataAO.addBook(title,author,isbn,availableCopies);
+    }
+
+    public void updateBookTitle(int bookId, String newName) {
 
     }
 
-    public void updateBook(Book book) {
+    public void updateBookAuthor(int bookId, String newAuthor) {
 
     }
 
-    public void deleteBook(Book book) {
+    public void updateBookIsbn(int bookId, String newIsbn) {
 
+    }
+
+    public void updateBookAvailableCopies(int bookId, int availableCopies) {
+
+    }
+
+    public void deleteBook(int bookInt) throws SQLException {
+        bookDataAO.deleteBook(bookInt);
     }
 
     public Book getBookById(int bookId) {
