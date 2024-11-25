@@ -8,43 +8,39 @@ public class BookService {
         bookDataAO.addBook(title,author,isbn,availableCopies);
     }
 
-    public void updateBookTitle(int bookId, String newName) {
-
+    public void updateBookTitle(int bookId, String newName) throws SQLException {
+        bookDataAO.updateBookTitle(bookId, newName);
     }
 
-    public void updateBookAuthor(int bookId, String newAuthor) {
-
+    public void updateBookAuthor(int bookId, String newAuthor) throws SQLException {
+        bookDataAO.updateBookAuthor(bookId, newAuthor);
     }
 
-    public void updateBookIsbn(int bookId, String newIsbn) {
-
-    }
-
-    public void updateBookAvailableCopies(int bookId, int availableCopies) {
-
+    public void updateBookIsbn(int bookId, String newIsbn) throws SQLException {
+        bookDataAO.updateBookIsbn(bookId, newIsbn);
     }
 
     public void deleteBook(int bookInt) throws SQLException {
         bookDataAO.deleteBook(bookInt);
     }
 
-    public Book getBookById(int bookId) {
-        return null;
+    public Book getBookById(int bookId) throws SQLException {
+        return bookDataAO.getBookById(bookId);
     }
 
-    public List<Book> getAllBooks() {
-        return null;
+    public List<Book> getAllBooks() throws SQLException {
+        return bookDataAO.getAllBooks();
     }
 
-    public List<Book> searchBooks(String keyword) {
-        return null;
+    public List<Book> searchBooks(String keyword) throws SQLException {
+        return bookDataAO.searchBooks(keyword);
     }
 
-    public boolean checkIfBookIsAvailable(int bookId) {
-        return false;
+    public boolean checkIfBookIsAvailable(int bookId) throws SQLException {
+        return bookDataAO.checkIfBookIsAvailable(bookId);
     }
 
-    public void updateAvailableCopies(int bookId, int newCopies) {
-
+    public void updateAvailableCopies(int bookId, int newCopies) throws SQLException {
+        bookDataAO.updateAvailableCopies(bookId, newCopies);
     }
 }

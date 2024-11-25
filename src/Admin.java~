@@ -20,8 +20,6 @@ public class Admin extends User{
             {
                 case 1 -> addBook();
                 case 2 -> removeBook();
-                case 3 -> manageMember();
-
             }
         }
     }
@@ -83,43 +81,30 @@ public class Admin extends User{
                     String newEmail = scanner.next();
                     userDataAO.updateEmail(user.getUserId(),user.getEmail(),newEmail);
                 }
-                default -> System.out.println("Invalid choice!");
+                default -> System.out.println("Invaild choice!");
             }
         }
+
+        //String query = "Select * from users where user_id =" + userId;
+        //Statement stmt = DBconnector.conn.createStatement();
+
+        //ResultSet resultSet = stmt.executeQuery(query);
+        /*while(resultSet.next())
+        {
+            if(resultSet.getString("role").equalsIgnoreCase("Admin"))
+            {
+                System.out.println("Cannot display an admin user!");
+            }
+            else
+            {
+                System.out.println("User id: "+resultSet.getString("user_id")+"\nUsername: "+resultSet.getString("username")+"\nPassword: "+resultSet.getString("password")+"\nEmail: "+resultSet.getString("email"));
+
+            }
+        }*/
     }
 
-    public void updateBook() throws SQLException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter book id: ");
-        int bookId = scanner.nextInt();
-        Book book = bookDataAO.getBookById(bookId);
-        if(book == null)
-        {
-            System.out.println("Couldn't find the book provided!");
-        }
-        else
-        {
-            System.out.println("Book id: "+book.getBookId()+"\nTitle: "+book.getTitle()+"\nAuthor: "+book.getAuthor()+"ISBN: "+book.getIsbn()+"\nAvailable copies: "+book.getAvailableBooks());
-            System.out.println("\n1.Enter what you want to change 1.Title 2.Author 3.ISBN 4.Available copies: ");
-            int option = scanner.nextInt();
+    public void updateBook(Book book) {
 
-            switch (option)
-            {
-                case 1 ->
-                {
-                    System.out.println("Enter new title: ");
-                    String newTitle = scanner.next();
-                    bookDataAO.updateBookTitle(book.getBookId(),newTitle);
-                }
-
-                case 2 ->
-                {
-                    System.out.println("Enter new author: ");
-                    String newAuthor = scanner.next();
-                    bookDataAO.updateBookAuthor(book.getBookId(),newAuthor);
-                }
-            }
-        }
     }
 
     public void viewAllUsers() {
