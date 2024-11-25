@@ -19,7 +19,7 @@ public class TransactionDataAO {
         return null;
     }
 
-    public List<Transaction> getTransactionById(int transactionId) {
+    public Transaction getTransactionById(int transactionId) {
         return null;
     }
 
