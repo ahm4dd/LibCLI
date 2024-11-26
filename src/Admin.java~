@@ -147,10 +147,7 @@ public class Admin extends User{
         List<User> users = userDataAO.getAllUsers();
         for(User user : users)
         {
-            if(user.getUserType().equalsIgnoreCase("Member"))
-                System.out.println("------------------------------\nUser Id: "+ user.getUserId() +"\nUsername: "+ user.getUsername()+"\nPassword: " + user.getPassword() + "\nEmail: "+ user.getEmail());
-            else if(user.getUserType().equalsIgnoreCase("Admin"))
-                System.out.println("------------------------------\nUser Id: "+ user.getUserId() +"\nUsername: "+ user.getUsername()+"\nEmail: "+ user.getEmail());
+            System.out.println("------------------------------\nUser Id: "+ user.getUserId() +"\nUsername: "+ user.getUsername()+"\nPassword: " + user.getPassword() + "\nEmail: "+ user.getEmail());
         }
     }
 
