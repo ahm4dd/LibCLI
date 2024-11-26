@@ -5,30 +5,32 @@ public class UserService {
     private UserDataAO userDataAO = new UserDataAO();
 
     public void registerUser(String username, String password, String email, String userType) throws SQLException {
-
-        if(getUserByUsername(username) != null)
+        if(getUserByUsername(username) != null){
             System.out.println("Username already exists!");
-        else if(getUserByEmail(email) != null)
+        }
+        else if(getUserByEmail(email) != null){
             System.out.println("Email already exists!");
+        }
         else
             userDataAO.addUser(username,password,email,userType);
     }
 
     public void updatePassword(int userId, String oldPassword, String newPassword) throws SQLException {
-
         if(getUserById(userId) == null)
             System.out.println("User not found!");
-        else if (getUserById(userId).getPassword() != oldPassword)
+        else if (getUserById(userId).getPassword() != oldPassword) {
             System.out.println("Incorrect old password!");
-        else if (getUserById(userId).getPassword() == newPassword)
+        }
+        else if (getUserById(userId).getPassword() == newPassword) {
             System.out.println("New password cannot be the same as the old password!");
+        }
         else
             userDataAO.updatePassword(userId,oldPassword,newPassword);
     }
 
     public void updateUsername(int userId, String oldUsername, String newUsername) throws SQLException {
 
-        if(getUserById(userId) == null)
+        if(getUserById(userId) == null || getUserByUsername(oldUsername) == null)
             System.out.println("User not found!");
         else if(getUserById(userId).getUsername() != oldUsername)
             System.out.println("Incorrect old username!");
@@ -40,12 +42,12 @@ public class UserService {
 
     public void updateEmail(int userId, String oldEmail, String newEmail) throws SQLException {
 
-        if(getUserById(userId) == null)
-            System.out.println("User not found!");
-        else if (getUserById(userId).getEmail() != oldEmail)
-            System.out.println("Incorrect old email!");
-        else if(getUserByEmail(newEmail) != null)
+        if(getUserByEmail(newEmail) != null)
             System.out.println("The new email already exists!");
+
+        else if(getUserByEmail(oldEmail) == null)
+            System.out.println("The old email doesn't exist!");
+
         else
             userDataAO.updateEmail(userId,oldEmail,newEmail);
     }
