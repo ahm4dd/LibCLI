@@ -1,20 +1,22 @@
+import java.sql.*;
+import java.util.Date;
 import java.util.List;
 
 public class TransactionService {
 
-    public void checkoutBook(Transaction transaction) {
+    public void checkoutBook(int userId, int bookId, Date checkoutDate) {
 
     }
 
-    public void returnBook(Transaction transaction) {
+    public void returnBook(int userId, int bookId, Date returnDate) {
 
     }
 
-    public void updateTransaction(Transaction transaction) {
+    public void updateTransaction(int transactionId) {
 
     }
 
-    public void deleteTransaction(Transaction transaction) {
+    public void deleteTransaction(int transactionId) {
 
     }
 
@@ -31,12 +33,15 @@ public class TransactionService {
         return null;
     }
 
-    public boolean isBookAvailable(int bookId) {
-        return false;
+    public boolean isBookAvailable(int bookId) throws SQLException {
+        BookService bookService = new BookService();
+        return bookService.checkIfBookIsAvailable(bookId);
     }
 
-    public void updateAvailableBooksAfterCheckout(int bookId) {
-
+    public void updateAvailableBooksAfterCheckout(int bookId) throws SQLException {
+        BookService bookService = new BookService();
+        Book book = bookService.getBookById(bookId);
+        bookService.updateAvailableCopies(bookId, book.getAvailableBooks()-1);
     }
 
     public void updateAvailableBooksAfterReturn(int bookId) {

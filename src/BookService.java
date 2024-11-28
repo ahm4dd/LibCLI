@@ -1,36 +1,50 @@
+import java.sql.SQLException;
 import java.util.List;
 
 public class BookService {
+    private BookDataAO bookDataAO = new BookDataAO();
 
-    public void addBook(Book book) {
-
+    public void addBook(String title, String author, String isbn, int availableCopies) throws SQLException {
+        bookDataAO.addBook(title,author,isbn,availableCopies);
     }
 
-    public void updateBook(Book book) {
-
+    public void updateBookTitle(int bookId, String newName) throws SQLException {
+        bookDataAO.updateBookTitle(bookId, newName);
     }
 
-    public void deleteBook(Book book) {
-
+    public void updateBookAuthor(int bookId, String newAuthor) throws SQLException {
+        bookDataAO.updateBookAuthor(bookId, newAuthor);
     }
 
-    public Book getBookById(int bookId) {
-        return null;
+    public void updateBookIsbn(int bookId, String newIsbn) throws SQLException {
+        bookDataAO.updateBookIsbn(bookId, newIsbn);
     }
 
-    public List<Book> getAllBooks() {
-        return null;
+    public void deleteBook(int bookInt) throws SQLException {
+        bookDataAO.deleteBook(bookInt);
     }
 
-    public List<Book> searchBooks(String keyword) {
-        return null;
+    public Book getBookById(int bookId) throws SQLException {
+        return bookDataAO.getBookById(bookId);
     }
 
-    public boolean checkIfBookIsAvailable(int bookId) {
-        return false;
+    public List<Book> getAllBooks() throws SQLException {
+        return bookDataAO.getAllBooks();
     }
 
-    public void updateAvailableCopies(int bookId, int newCopies) {
+    public List<Book> searchBooks(String keyword) throws SQLException {
+        return bookDataAO.searchBooks(keyword);
+    }
 
+    public Book searchBooksByIsbn(String isbn) throws SQLException {
+        return bookDataAO.searchBooksByIsbn(isbn);
+    }
+
+    public boolean checkIfBookIsAvailable(int bookId) throws SQLException {
+        return bookDataAO.checkIfBookIsAvailable(bookId);
+    }
+
+    public void updateAvailableCopies(int bookId, int newCopies) throws SQLException {
+        bookDataAO.updateAvailableCopies(bookId, newCopies);
     }
 }

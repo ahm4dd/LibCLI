@@ -3,15 +3,15 @@ import java.util.List;
 
 public class TransactionDataAO {
 
-    public void addTransaction(Transaction transaction) {
+    public void addTransaction(int userId, int bookId, Date checkoutDate, Date returnDate) {
 
     }
 
-    public void updateTransaction(Transaction transaction) {
+    public void updateTransaction(int transactionId) {
 
     }
 
-    public void deleteTransaction(Transaction transaction) {
+    public void deleteTransaction(int transactionId) {
 
     }
 
@@ -19,7 +19,7 @@ public class TransactionDataAO {
         return null;
     }
 
-    public List<Transaction> getTransactionById(int transactionId) {
+    public Transaction getTransactionById(int transactionId) {
         return null;
     }
 

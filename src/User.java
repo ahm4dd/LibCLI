@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 abstract public class User {
     private int userId;
     private String username;
@@ -6,6 +7,13 @@ abstract public class User {
     private String userType;
 
 
+    public User(int userId, String username, String password, String email, String userType) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.userType = userType;
+    }
     public int getUserId() {
         return userId;
     }
@@ -45,4 +53,6 @@ abstract public class User {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+
+    abstract void accessLibrarySystem() throws SQLException;
 }
