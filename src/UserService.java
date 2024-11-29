@@ -87,7 +87,7 @@ public class UserService {
             return false;
         }
         else
-            return false;
+            return true;
     }
 
     public User loginUser(String username, String password) throws SQLException {
