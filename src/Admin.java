@@ -29,6 +29,7 @@ public class Admin extends User{
                 case 4 -> updateBook();
                 case 5 -> viewAllUsers();
                 case 6 -> searchBook();
+                case 7 -> test();
             }
         }
     }
@@ -38,12 +39,12 @@ public class Admin extends User{
         System.out.println("Enter title: ");
         String title = scanner.nextLine();
         System.out.println("Enter author: ");
-        String author = scanner.nextLine();
+        int authorId = scanner.nextInt();
         System.out.println("Enter ISBN: ");
         String isbn = scanner.nextLine();
         System.out.println("Enter available copies: ");
         int availableCopies = scanner.nextInt();
-        bookDataAO.addBook(title, author, isbn, availableCopies);
+        bookDataAO.addBook(title, authorId, isbn, availableCopies);
     }
 
     public void removeBook() throws SQLException {
@@ -122,8 +123,8 @@ public class Admin extends User{
                 case 2 ->
                 {
                     System.out.println("Enter new author: ");
-                    String newAuthor = scanner.next();
-                    bookDataAO.updateBookAuthor(book.getBookId(),newAuthor);
+                    int newAuthorId = scanner.nextInt();
+                    bookDataAO.updateBookAuthor(book.getBookId(),newAuthorId);
                 }
 
                 case 3 ->
@@ -175,5 +176,10 @@ public class Admin extends User{
 
     public void viewTransactions() throws SQLException {
 
+    }
+    public void test() throws SQLException {
+        BookDataAO bookDataAO = new BookDataAO();
+        Author author = bookDataAO.getBookAuthor(1);
+        System.out.println("Author id: "+ author.getAuthorId()+ "\nAuthor name: " + author.getFirstName()+" "+ author.getLastName());
     }
 }

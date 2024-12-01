@@ -26,13 +26,17 @@ public class AuthorDataAO {
             String firstName = resultSet.getString("first_name");
             String lastName = resultSet.getString("last_name");
             String bio = resultSet.getString("bio");
-            Date birthday = resultSet.getDate("birthday");
 
-            Author author = new Author(authorId, firstName, lastName, bio, birthday);
+            Author author = new Author(authorId, firstName, lastName, bio);
             return author;
         }
         return null;
     }
+
+    /*
+    public List<Book> getBooksByAuthor(int authorId){
+        String query = "Select author."
+    }*/
 
     public void deleteAuthor(int authorId) throws SQLException {
         String query = "delete from author where author_id =" + authorId;

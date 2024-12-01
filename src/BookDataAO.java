@@ -1,7 +1,5 @@
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 public class BookDataAO {
@@ -101,6 +99,22 @@ public class BookDataAO {
         }
         return books;
     }
+
+    public Author getBookAuthor(int bookId) throws SQLException {
+        String query = "Select books.author_id, author.first_name, author.last_name, author.bio from books INNER JOIN author ON books.author_id = author.author_id AND books.book_id = " + bookId;
+        Statement stmt = DBconnector.conn.createStatement();
+        ResultSet resultSet = stmt.executeQuery(query);
+        while(resultSet.next()){
+            int authorId = resultSet.getInt("books.author_id");
+            String firstName = resultSet.getString("author.first_name");
+            String lastName = resultSet.getString("author.last_name");
+            String bio = resultSet.getString("author.bio");
+            Author author = new Author(authorId,firstName,lastName,bio);
+            return author;
+        }
+        return null;
+    }
+    
 
     public List<Book> searchBooks(String keyword) throws SQLException {
         List<Book> books = new ArrayList<Book>();

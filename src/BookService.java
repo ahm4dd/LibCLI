@@ -4,16 +4,16 @@ import java.util.List;
 public class BookService {
     private BookDataAO bookDataAO = new BookDataAO();
 
-    public void addBook(String title, String author, String isbn, int availableCopies) throws SQLException {
-        bookDataAO.addBook(title,author,isbn,availableCopies);
+    public void addBook(String title, int authorId, String isbn, int availableCopies) throws SQLException {
+        bookDataAO.addBook(title,authorId,isbn,availableCopies);
     }
 
     public void updateBookTitle(int bookId, String newName) throws SQLException {
         bookDataAO.updateBookTitle(bookId, newName);
     }
 
-    public void updateBookAuthor(int bookId, String newAuthor) throws SQLException {
-        bookDataAO.updateBookAuthor(bookId, newAuthor);
+    public void updateBookAuthor(int bookId, int newAuthorId) throws SQLException {
+        bookDataAO.updateBookAuthor(bookId, newAuthorId);
     }
 
     public void updateBookIsbn(int bookId, String newIsbn) throws SQLException {
@@ -24,6 +24,9 @@ public class BookService {
         bookDataAO.deleteBook(bookInt);
     }
 
+    public Author getBookAuthor(int bookId) throws SQLException {
+        return bookDataAO.getBookAuthor(bookId);
+    }
     public Book getBookById(int bookId) throws SQLException {
         return bookDataAO.getBookById(bookId);
     }
