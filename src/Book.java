@@ -2,6 +2,7 @@ public class Book {
     private int bookId;
     private String title;
     private int author_id;
+    private int category_id;
     private String isbn;
     private int availableBooks;
 
@@ -9,6 +10,14 @@ public class Book {
         this.bookId = bookId;
         this.title = title;
         this.author_id = author_id;
+        this.isbn = isbn;
+        this.availableBooks = availableBooks;
+    }
+    Book(int bookId, String title, int author_id,int category_id, String isbn, int availableBooks){
+        this.bookId = bookId;
+        this.title = title;
+        this.author_id = author_id;
+        this.category_id = category_id;
         this.isbn = isbn;
         this.availableBooks = availableBooks;
     }
@@ -34,6 +43,14 @@ public class Book {
 
     public void setAuthor(int author_id){
         this.author_id = author_id;
+    }
+
+    public int getCategory(){
+        return category_id;
+    }
+
+    public void setCategory(int category_id){
+        this.category_id = category_id;
     }
 
     public String getIsbn(){

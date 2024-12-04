@@ -5,24 +5,17 @@ import java.util.List;
 public class BookDataAO {
 
 
-    public void addBook(String title, int authorId, String isbn, int availableCopies) throws SQLException {
-        if (availableCopies < 0)
-        {
-            System.out.println("Copies cannot be below 0.");
-        }
-
-        else
-        {
-            String query = "insert into books (title,author_id,isbn,available_copies) VALUES (?,?,?,?)";
+    public void addBook(String title, int authorId, int categoryId,String isbn, int availableCopies) throws SQLException {
+            String query = "insert into books (title,author_id,category_id,isbn,available_copies) VALUES (?,?,?,?,?)";
             PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
             stmt.setString(1,title);
             stmt.setInt(2,authorId);
-            stmt.setString(3,isbn);
-            stmt.setInt(4,availableCopies);
+            stmt.setInt(3,categoryId);
+            stmt.setString(4,isbn);
+            stmt.setInt(5,availableCopies);
             int resultSet = stmt.executeUpdate();
             if(resultSet != 0)
                 System.out.println("Added book successfully!");
-        }
     }
 
     public void updateBookTitle(int bookId, String newName) throws SQLException {
@@ -52,6 +45,15 @@ public class BookDataAO {
             System.out.println("Book ISBN updated successfully!");
     }
 
+    public void updateBookCategory(int bookId, int newCategoryId) throws SQLException {
+        String query = "Update books set category_id = ? where book_id = "+bookId;
+        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
+        stmt.setInt(1,newCategoryId);
+        int resultSet = stmt.executeUpdate();
+        if(resultSet != 0)
+            System.out.println("Book category updated successfully");
+    }
+
 
     public void deleteBook(int bookId) throws SQLException {
         String query = "delete from books where book_id = ?";
@@ -73,9 +75,10 @@ public class BookDataAO {
             int bookId1 = resultSet.getInt("book_id");
             String title = resultSet.getString("title");
             int authorId = resultSet.getInt("author_id");
+            int categoryId = resultSet.getInt("category_id");
             String isbn = resultSet.getString("isbn");
             int availableCopies = resultSet.getInt("available_copies");
-            Book book = new Book(bookId1, title, authorId, isbn, availableCopies);
+            Book book = new Book(bookId1, title, authorId, categoryId,isbn, availableCopies);
             return book;
         }
         return null;
@@ -91,9 +94,10 @@ public class BookDataAO {
             int book_id = resultSet.getInt("book_id");
             String title = resultSet.getString("title");
             int authorId = resultSet.getInt("author_id");
+            int categoryId = resultSet.getInt("category_id");
             String isbn = resultSet.getString("isbn");
             int availableCopies = resultSet.getInt("available_copies");
-            Book book = new Book(book_id,title,authorId,isbn,availableCopies);
+            Book book = new Book(book_id,title,authorId,categoryId,isbn,availableCopies);
             books.add(book);
 
         }
@@ -126,9 +130,10 @@ public class BookDataAO {
             int book_id = resultSet.getInt("book_id");
             String title = resultSet.getString("title");
             int authorId = resultSet.getInt("author_id");
+            int categoryId = resultSet.getInt("category_id");
             String isbn = resultSet.getString("isbn");
             int availableCopies = resultSet.getInt("available_copies");
-            Book book = new Book(book_id,title,authorId,isbn,availableCopies);
+            Book book = new Book(book_id,title,authorId,categoryId,isbn,availableCopies);
             books.add(book);
         }
         return books;
@@ -143,11 +148,29 @@ public class BookDataAO {
             int book_id = resultSet.getInt("book_id");
             String title = resultSet.getString("title");
             int authorId = resultSet.getInt("author_id");
+            int categoryId = resultSet.getInt("category_id");
             int availableCopies = resultSet.getInt("available_copies");
-            Book book = new Book(book_id,title,authorId,isbn,availableCopies);
+            Book book = new Book(book_id,title,authorId,categoryId,isbn,availableCopies);
             return book;
         }
         return null;
+    }
+
+    public List<Book> searchBooksByCategory(int categoryId) throws SQLException {
+        List<Book> books = new ArrayList<Book>();
+        String query = "Select * from books where category_id =" + categoryId;
+        Statement stmt = DBconnector.conn.createStatement();
+        ResultSet resultSet = stmt.executeQuery(query);
+        while(resultSet.next()){
+            int book_id = resultSet.getInt("book_id");
+            String title = resultSet.getString("title");
+            int authorId = resultSet.getInt("author_id");
+            String isbn = resultSet.getString("isbn");
+            int availableCopies = resultSet.getInt("available_copies");
+            Book book = new Book(book_id,title,authorId,categoryId,isbn,availableCopies);
+            books.add(book);
+        }
+        return books;
     }
 
     public boolean checkIfBookIsAvailable(int bookId) throws SQLException {
@@ -172,4 +195,5 @@ public class BookDataAO {
         if(resultSet !=0)
             System.out.println("Copies updated successfully!");
     }
+
 }

@@ -5,20 +5,12 @@ public class Author {
     private String firstName;
     private String lastName;
     private String bio;
-    private Date birthday;
 
 
     Author(int authorId, String firstName, String lastName, String bio){
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
-    }
-
-    Author(int authorId, String firstName, String lastName, String bio, Date birthday){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.bio = bio;
-        this.birthday = birthday;
     }
 
     public int getAuthorId(){
@@ -51,13 +43,5 @@ public class Author {
 
     public void setBio(String bio){
         this.bio = bio;
-    }
-
-    public Date getBirthday(){
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday){
-        this.birthday = birthday;
     }
 }

@@ -33,10 +33,23 @@ public class AuthorDataAO {
         return null;
     }
 
-    /*
-    public List<Book> getBooksByAuthor(int authorId){
-        String query = "Select author."
-    }*/
+
+    public List<Book> getBooksByAuthor(int authorId) throws SQLException {
+        List<Book> books = new ArrayList<Book>();
+        String query = "Select * from books inner join author ON author.author_id = "+ authorId + "AND books.author_id = author.author_id";
+        Statement stmt = DBconnector.conn.createStatement();
+        ResultSet resultSet = stmt.executeQuery(query);
+        while(resultSet.next()){
+            int bookId = resultSet.getInt("books.book_id");
+            String title = resultSet.getString("books.title");
+            int price = resultSet.getInt("books.price");
+            String isbn = resultSet.getString("books.isbn");
+            int availableCopies = resultSet.getInt("books.available_copies");
+            Book book = new Book(bookId,title,authorId,isbn,availableCopies);
+            books.add(book);
+        }
+        return books;
+    }
 
     public void deleteAuthor(int authorId) throws SQLException {
         String query = "delete from author where author_id =" + authorId;
@@ -65,11 +78,6 @@ public class AuthorDataAO {
         int resultSet = stmt.executeUpdate();
     }
 
-    public void updateBirthday(int authorId, Date birthday) throws SQLException {
-        String query = "update author set birthday = ? where author_id = " + authorId;
-        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
-        int resultSet = stmt.executeUpdate();
-    }
 
     public List<Author> getAllAuthors() throws SQLException {
         List<Author> authors = new ArrayList<Author>();
@@ -81,8 +89,7 @@ public class AuthorDataAO {
             String firstName = resultSet.getString("first_name");
             String lastName = resultSet.getString("last_name");
             String bio = resultSet.getString("bio");
-            Date birthday = resultSet.getDate("birthday");
-            Author author = new Author(authorId,firstName,lastName,bio,birthday);
+            Author author = new Author(authorId,firstName,lastName,bio);
             authors.add(author);
         }
         return authors;
