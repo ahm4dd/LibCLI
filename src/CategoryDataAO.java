@@ -32,18 +32,18 @@ public class CategoryDataAO {
         int resultSet = stmt.executeUpdate();
     }
 
-    public Category getCategory(int categoryId) throws SQLException {
+    public Category getCategoryById(int categoryId) throws SQLException {
         String query = "select * from categories where category_id = ?";
         PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
         stmt.setInt(1, categoryId);
         ResultSet resultSet = stmt.executeQuery();
-        Category category = new Category();
         if(resultSet.next()) {
-            category.setCategory_id(resultSet.getInt("category_id"));
-            category.setName(resultSet.getString("name"));
-            category.setDescription(resultSet.getString("description"));
+            String name = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            Category category = new Category(categoryId, name, description);
+            return category;
         }
-        return category;
+        return null;
     }
 
     public List<Category> getAllCategories() throws SQLException {
