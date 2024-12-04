@@ -59,7 +59,7 @@ public class BookReviewDataAO {
         int resultSet = stmt.executeUpdate();
     }
 
-    public void updateBookReviewReview(int reviewId, String newReview) throws SQLException {
+    public void updateBookReview(int reviewId, String newReview) throws SQLException {
         String query = "Update book_review set review = ? where review_id = "+reviewId;
         PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
         stmt.setString(1,newReview);
@@ -102,7 +102,18 @@ public class BookReviewDataAO {
         return reviews;
     }
 
+    public void deleteAllBookReviewsForBook(int bookId) throws SQLException {
+        String query = "delete from book_review where book_id = ?";
+        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
+        stmt.setInt(1, bookId);
+        int resultSet = stmt.executeUpdate();
+    }
 
-
+    public void deleteAllBookReviewsForUser(int userId) throws SQLException {
+        String query = "delete from book_review where user_id = ?";
+        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
+        stmt.setInt(1, userId);
+        int resultSet = stmt.executeUpdate();
+    }
 
 }
