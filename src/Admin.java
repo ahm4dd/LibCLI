@@ -38,13 +38,15 @@ public class Admin extends User{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter title: ");
         String title = scanner.nextLine();
-        System.out.println("Enter author: ");
+        System.out.println("Enter author id: ");
         int authorId = scanner.nextInt();
+        System.out.println("Enter category id: ");
+        int categoryId = scanner.nextInt();
         System.out.println("Enter ISBN: ");
         String isbn = scanner.nextLine();
         System.out.println("Enter available copies: ");
         int availableCopies = scanner.nextInt();
-        bookDataAO.addBook(title, authorId, isbn, availableCopies);
+        bookDataAO.addBook(title, authorId, categoryId,isbn, availableCopies);
     }
 
     public void removeBook() throws SQLException {
