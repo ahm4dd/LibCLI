@@ -1,11 +1,19 @@
-import java.util.Date;
+import java.sql.Date;
 
 public class Transaction {
     private int transactionId;
     private int userId;
     private int bookId;
     private Date checkoutDate;
-    private Date returnDate;
+    private int cost;
+
+    Transaction(int transactionId, int userId, int bookId, Date checkoutDate,int cost) {
+        this.transactionId = transactionId;
+        this.userId = userId;
+        this.bookId = bookId;
+        this.checkoutDate = checkoutDate;
+        this.cost=cost;
+    }
 
     public int getTransactionId() {
         return transactionId;
@@ -39,11 +47,11 @@ public class Transaction {
         this.checkoutDate = checkoutDate;
     }
 
-    public Date getReturnDate() {
-        return returnDate;
+    public int getCost() {
+        return cost;
     }
 
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }

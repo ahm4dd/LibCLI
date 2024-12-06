@@ -1,55 +1,55 @@
 import java.sql.*;
-import java.util.Date;
 import java.util.List;
 
 public class TransactionService {
+    private TransactionDataAO transactionDataAO=new TransactionDataAO();
 
-    public void checkoutBook(int userId, int bookId, Date checkoutDate) {
-
+    public void addTransaction(int userId, int bookId,int cost, Date checkoutDate) throws SQLException {
+        transactionDataAO.addTransaction(userId,bookId,cost, checkoutDate);
+    }
+    public void updateTransactionCost(int transactionId,int newCost) throws SQLException {
+        transactionDataAO.updateTransactionCost(transactionId,newCost);
+    }
+    public void updateTransactionDate(int transactionId,Date newDate) throws SQLException {
+        transactionDataAO.updateTransactionDate(transactionId,newDate);
+    }
+    public void updateTransactionBookId(int transactionId,int newBookId) throws SQLException {
+        transactionDataAO.updateTransactionBookId(transactionId,newBookId);
+    }
+    public void updateTransactionUserId(int transactionId,int newUserId) throws SQLException {
+        transactionDataAO.updateTransactionUserId(transactionId,newUserId);
+    }
+    public void deleteTransactionByUserId(int userId) throws SQLException{
+        transactionDataAO.deleteTransactionByUserId(userId);
+    }
+    public void deleteTransactionByBookId(int bookId) throws SQLException{
+        transactionDataAO.deleteTransactionByBookId(bookId);
+    }
+    public void deleteTransactionById(int transactionId) throws SQLException{
+        transactionDataAO.deleteTransactionById(transactionId);
     }
 
-    public void returnBook(int userId, int bookId, Date returnDate) {
-
+    public List<Transaction> getTransactionByUserId(int userId) throws SQLException {
+        return transactionDataAO.getTransactionByUserId(userId);
     }
 
-    public void updateTransaction(int transactionId) {
-
+    public Transaction getTransactionById(int transactionId) throws SQLException {
+        return transactionDataAO.getTransactionById(transactionId);
+    }
+    public List<Transaction> getAllTransactions() throws SQLException {
+        return transactionDataAO.getAllTransactions();
+    }
+    public int getAllSalesByBookId(int bookId) throws SQLException {
+        return transactionDataAO.getAllSalesByBookId(bookId);
+    }
+    public int getAllRevenue() throws SQLException {
+        return transactionDataAO.getAllRevenue();
     }
 
-    public void deleteTransaction(int transactionId) {
-
+    public boolean checkIfTransactionExists(int transactionId) throws SQLException {
+        if(transactionDataAO.getTransactionById(transactionId) != null)
+            return true;
+        else
+            return false;
     }
-
-    public List<Transaction> getTransactionByBookId(int bookId) {
-        return null;
-    }
-
-    public List<Transaction> getTransactionByUserId(int userId) {
-        return null;
-    }
-
-    public Transaction getTransactionById(int transactionId)
-    {
-        return null;
-    }
-
-    public boolean isBookAvailable(int bookId) throws SQLException {
-        BookService bookService = new BookService();
-        return bookService.checkIfBookIsAvailable(bookId);
-    }
-
-    public void updateAvailableBooksAfterCheckout(int bookId) throws SQLException {
-        BookService bookService = new BookService();
-        Book book = bookService.getBookById(bookId);
-        bookService.updateAvailableCopies(bookId, book.getAvailableBooks()-1);
-    }
-
-    public void updateAvailableBooksAfterReturn(int bookId) {
-
-    }
-
-    public List<Book> getBorrowedBooksByUserId(int userId) {
-        return null;
-    }
-
 }
