@@ -1,13 +1,9 @@
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.List;
-import java.util.ArrayList;
-import javax.swing.*;
 import java.sql.*;
 import java.util.Scanner;
 public class Admin extends User{
-    private UserDataAO userDataAO = new UserDataAO();
-    private BookDataAO bookDataAO = new BookDataAO();
+    private UserService userService = new UserService();
+    private BookService bookService = new BookService();
 
     Admin(int userId, String username, String password, String email, String userType) {
         super(userId, username, password, email, userType);
@@ -46,14 +42,14 @@ public class Admin extends User{
         String isbn = scanner.nextLine();
         System.out.println("Enter available copies: ");
         int availableCopies = scanner.nextInt();
-        bookDataAO.addBook(title, authorId, categoryId,isbn, availableCopies);
+        bookService.addBook(title, authorId, categoryId,isbn, availableCopies);
     }
 
     public void removeBook() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter book id: ");
         int bookId = scanner.nextInt();
-        bookDataAO.deleteBook(bookId);
+        bookService.deleteBook(bookId);
     }
 
     public void manageMember() throws SQLException {
@@ -61,7 +57,7 @@ public class Admin extends User{
         System.out.println("Enter user id: ");
         int userId = scanner.nextInt();
 
-        User user = userDataAO.getUserById(userId);
+        User user = userService.getUserById(userId);
         if(user == null)
         {
             System.out.println("couldn't find the user");
@@ -81,17 +77,17 @@ public class Admin extends User{
                 case 1 -> {
                     System.out.println("Enter new username: ");
                     String newUsername = scanner.next();
-                    userDataAO.updateUsername(user.getUserId(),user.getUsername(),newUsername);
+                    userService.updateUsername(user.getUserId(),user.getUsername(),newUsername);
                 }
                 case 2 -> {
                     System.out.println("Enter new password: ");
                     String newPassword = scanner.next();
-                    userDataAO.updatePassword(user.getUserId(),user.getPassword(),newPassword);
+                    userService.updatePassword(user.getUserId(),user.getPassword(),newPassword);
                 }
                 case 3 -> {
                     System.out.println("Enter new email: ");
                     String newEmail = scanner.next();
-                    userDataAO.updateEmail(user.getUserId(),user.getEmail(),newEmail);
+                    userService.updateEmail(user.getUserId(),user.getEmail(),newEmail);
                 }
                 default -> System.out.println("Invalid choice!");
             }
@@ -102,7 +98,7 @@ public class Admin extends User{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter book id: ");
         int bookId = scanner.nextInt();
-        Book book = bookDataAO.getBookById(bookId);
+        Book book = bookService.getBookById(bookId);
         if(book == null)
         {
             System.out.println("Couldn't find the book provided!");
@@ -119,35 +115,35 @@ public class Admin extends User{
                 {
                     System.out.println("Enter new title: ");
                     String newTitle = scanner.next();
-                    bookDataAO.updateBookTitle(book.getBookId(),newTitle);
+                    bookService.updateBookTitle(book.getBookId(),newTitle);
                 }
 
                 case 2 ->
                 {
                     System.out.println("Enter new author: ");
                     int newAuthorId = scanner.nextInt();
-                    bookDataAO.updateBookAuthor(book.getBookId(),newAuthorId);
+                    bookService.updateBookAuthor(book.getBookId(),newAuthorId);
                 }
 
                 case 3 ->
                 {
                     System.out.println("Enter new ISBN: ");
                     String newIsbn = scanner.next();
-                    bookDataAO.updateBookIsbn(book.getBookId(),newIsbn);
+                    bookService.updateBookIsbn(book.getBookId(),newIsbn);
                 }
 
                 case 4 ->
                 {
                     System.out.println("Enter new available copies: ");
                     int newAvailableCopies = scanner.nextInt();
-                    bookDataAO.updateAvailableCopies(book.getBookId(),newAvailableCopies);
+                    bookService.updateAvailableCopies(book.getBookId(),newAvailableCopies);
                 }
             }
         }
     }
 
     public void viewAllUsers() throws SQLException {
-        List<User> users = userDataAO.getAllUsers();
+        List<User> users = userService.getAllUsers();
         for(User user : users)
         {
             if(user.getUserType().equalsIgnoreCase("Member"))
@@ -161,7 +157,7 @@ public class Admin extends User{
         System.out.println("Enter book title: ");
         Scanner scanner = new Scanner(System.in);
         String title = scanner.next();
-        List<Book> book = bookDataAO.searchBooks(title);
+        List<Book> book = bookService.searchBooks(title);
         for(Book book1 : book)
         {
             System.out.println("------------------------------\nBook id: "+book1.getBookId()+"\nTitle: "+book1.getTitle()+"\nAuthor: "+book1.getAuthor()+"ISBN: "+book1.getIsbn()+"\nAvailable copies: "+book1.getAvailableBooks());
@@ -169,7 +165,7 @@ public class Admin extends User{
     }
 
     public void viewAllBooks() throws SQLException {
-        List<Book> books = bookDataAO.getAllBooks();
+        List<Book> books = bookService.getAllBooks();
         for(Book book : books)
         {
             System.out.println("------------------------------\nBook id: "+book.getBookId()+"\nTitle: "+book.getTitle()+"\nAuthor: "+book.getAuthor()+"ISBN: "+book.getIsbn()+"\nAvailable copies: "+book.getAvailableBooks());
