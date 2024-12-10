@@ -49,7 +49,7 @@ public class AuthorService {
             authorDataAO.updateLastName(authorId,newLastName);
     }
 
-    public void updatebio(int authorId, String newBio) throws SQLException {
+    public void updateBio(int authorId, String newBio) throws SQLException {
         if(!checkIfAuthorExists(authorId))
             System.out.println("Author doesn't exist");
         else

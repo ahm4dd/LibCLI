@@ -5,7 +5,7 @@ import java.util.List;
 public class BookService {
   private BookDataAO bookDataAO = new BookDataAO();
 
-  public void addBook(String title, int authorId, int categoryId, String isbn, int availableCopies)
+  public void addBook(String title, int authorId, int categoryId, String isbn, int price ,int availableCopies)
       throws SQLException {
     if (availableCopies < 0)
       System.out.println("Copies cannot be below 0.");
@@ -13,7 +13,7 @@ public class BookService {
       System.out.println("ISBN already exists");
     // Needs more logic to check if author exists and if the category id is right.
     else
-      bookDataAO.addBook(title, authorId, categoryId, isbn, availableCopies);
+      bookDataAO.addBook(title, authorId, categoryId, isbn, price,availableCopies);
   }
 
   public void updateBookTitle(int bookId, String newName) throws SQLException {
@@ -44,6 +44,13 @@ public class BookService {
       System.out.println("Book doesn't exist");
     else
       bookDataAO.updateBookCategory(bookId, newCategoryId);
+  }
+
+  public void updateBookPrice(int bookId, int newPrice) throws SQLException {
+    if (!checkIfBookIsAvailable(bookId))
+      System.out.println("Book doesn't exist");
+    else
+      bookDataAO.updateBookPrice(bookId, newPrice);
   }
 
   public void deleteBook(int bookId) throws SQLException {

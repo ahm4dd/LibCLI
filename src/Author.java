@@ -8,6 +8,7 @@ public class Author {
 
 
     Author(int authorId, String firstName, String lastName, String bio){
+        this.authorId = authorId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;

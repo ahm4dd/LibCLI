@@ -120,6 +120,24 @@ public class TransactionDataAO {
         return null;
     }
 
+    public List<Transaction> getTransactionByBookId(int bookId) throws SQLException {
+        List<Transaction> transactions = new ArrayList<>();
+        String query="select * from transactions where book_id=?";
+        PreparedStatement stmt=DBconnector.conn.prepareStatement(query);
+        stmt.setInt(1,bookId);
+        ResultSet rs=stmt.executeQuery();
+        while(rs.next()){
+            int transactionID=rs.getInt("transaction_id");
+            int userId=rs.getInt("user_id");
+            int cost=rs.getInt("cost");
+            Date checkoutDate=rs.getDate("date");
+            Transaction transaction=new Transaction(transactionID,userId,bookId,checkoutDate,cost);
+            transactions.add(transaction);
+
+        }
+        return transactions;
+    }
+
     public List<Transaction> getAllTransactions() throws SQLException {
         List<Transaction> transaction=new ArrayList<Transaction>();
         String query="select * from transactions";

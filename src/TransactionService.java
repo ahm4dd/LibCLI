@@ -36,6 +36,11 @@ public class TransactionService {
     public Transaction getTransactionById(int transactionId) throws SQLException {
         return transactionDataAO.getTransactionById(transactionId);
     }
+
+    public List<Transaction> getTransactionByBookId(int bookId) throws SQLException {
+        return transactionDataAO.getTransactionByBookId(bookId);
+    }
+
     public List<Transaction> getAllTransactions() throws SQLException {
         return transactionDataAO.getAllTransactions();
     }

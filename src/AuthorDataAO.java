@@ -58,7 +58,7 @@ public class AuthorDataAO {
     }
 
     public void updateFirstName(int authorId, String newFirstName) throws SQLException {
-        String query = "UPDATE author SET first_name = ? where authorId = " + authorId;
+        String query = "UPDATE author SET first_name = ? where author_id = " + authorId;
         PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
         stmt.setString(1, newFirstName);
         int resultSet = stmt.executeUpdate();
