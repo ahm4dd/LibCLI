@@ -18,7 +18,8 @@ public class Admin extends User {
     System.out.println(
             "1.Add book 2.Remove book 3.Manage user 4.Update book 5.View all users\n" +
                     "6.Search book 7.Search user 8.Search transaction 9.Add transaction 10.Modify transaction\n" +
-                    "11.View all books 12.View all transactions 13.Add author 14.Manage Author 15.Add category\n" + "16.View all categories 17.Manage category 18.Search category 19.View all authors 20.Search author: ");
+                    "11.View all books 12.View all transactions 13.Add author 14.Manage Author 15.Add category\n" +
+                    "16.View all categories 17.Manage category 18.Search category 19.View all authors 20.Search author 21.Get books by author: ");
     {
       Scanner scanner = new Scanner(System.in);
       int option = scanner.nextInt();
@@ -43,6 +44,7 @@ public class Admin extends User {
         case 18 -> searchCategory();
         case 19 -> viewAllAuthors();
         case 20 -> searchAuthor();
+        case 21 -> getBooksByAuthor();
       }
     }
   }
@@ -489,6 +491,18 @@ public class Admin extends User {
     int authorId = scanner.nextInt();
     Author author = authorService.getAuthorById(authorId);
     System.out.println("Author id: " + author.getAuthorId() + "\nAuthor name: " + author.getFirstName() + " " + author.getLastName() + "\nAuthor bio: " + author.getBio() + "\n");
+  }
+
+  public void getBooksByAuthor() throws SQLException{
+    System.out.println("Enter the author ID: ");
+    Scanner scanner = new Scanner(System.in);
+    int authorId = scanner.nextInt();
+    List<Book> books = authorService.getBooksByAuthor(authorId);
+    for (Book book1 : books) {
+      System.out.println("------------------------------\nBook id: " + book1.getBookId() + "\nTitle: "
+              + book1.getTitle() + "\nAuthor: " + book1.getAuthor() + "\nISBN: " + book1.getIsbn() + "\nAvailable copies: "
+              + book1.getAvailableBooks() + "\nCategory id: " + book1.getCategory() + "\nPrice: " + book1.getPrice());
+    }
   }
 
 }

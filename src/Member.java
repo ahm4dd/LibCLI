@@ -7,7 +7,7 @@ public class Member extends User{
     }
 
     public void accessLibrarySystem() {
-        System.out.println("Member can access library system.");
+        System.out.println("1.");
     }
 
     public void borrowBook() {
