@@ -5,13 +5,22 @@ public class BookReviewService {
     private BookReviewDataAO bookReviewDataAO = new BookReviewDataAO();
     private BookService bookService = new BookService();
     private UserService userService = new UserService();
-    public void addBookReview(int user_id,int bookId,String review) throws SQLException {
-        bookReviewDataAO.addBookReview(user_id,bookId,review);
+    public void addBookReview(int user_id,int bookId,int rating) throws SQLException {
+        bookReviewDataAO.addBookReview(user_id,bookId,rating);
     }
 
     public void deleteBookReview(int reviewId) throws SQLException, SQLException {
         if(!checkIfBookReviewExists(reviewId))
             System.out.println("Review doesn't exist");
+        else
+            bookReviewDataAO.deleteBookReview(reviewId);
+    }
+
+    public void deleteBookReviewForUser(int reviewId, int userId) throws SQLException {
+        if(!checkIfBookReviewExists(reviewId))
+            System.out.println("Review doesn't exist");
+        if(!checkIfBookReviewBelongsToUser(reviewId, userId))
+            System.out.println("Review doesn't belong to user");
         else
             bookReviewDataAO.deleteBookReview(reviewId);
     }
@@ -37,11 +46,17 @@ public class BookReviewService {
             bookReviewDataAO.updateBookReviewRating(reviewId, newRating);
     }
 
-    public void updateBookReview(int reviewId, String newReview) throws SQLException {
+    public void updateBookReviewForUser(int reviewId, int userId, int newRating) throws SQLException {
         if(!checkIfBookReviewExists(reviewId))
             System.out.println("Review doesn't exist");
+        if(!checkIfBookReviewBelongsToUser(reviewId, userId))
+            System.out.println("Review doesn't belong to user");
         else
-            bookReviewDataAO.updateBookReview(reviewId, newReview);
+            bookReviewDataAO.updateBookReviewRating(reviewId, newRating);
+    }
+
+    private boolean checkIfBookReviewBelongsToUser(int reviewId, int userId) throws SQLException {
+        return bookReviewDataAO.getBookReviewById(reviewId).getUser_id() == userId;
     }
 
     public BookReview getBookReviewById(int reviewId) throws SQLException {

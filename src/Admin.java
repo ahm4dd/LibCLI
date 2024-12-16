@@ -278,9 +278,7 @@ public class Admin extends User {
     int userId = scanner.nextInt();
     System.out.println("Enter checkout date: ");
     Date checkoutDate = Date.valueOf(scanner.next());
-    System.out.println("Enter cost: ");
-    int cost = scanner.nextInt();
-    transactionService.addTransaction(userId, bookId, cost, checkoutDate);
+    transactionService.addTransaction(userId, bookId);
   }
 
   public void modifyTransaction() throws SQLException {
@@ -295,7 +293,7 @@ public class Admin extends User {
           case 1 -> {
             System.out.println("Enter transaction id: ");
             int transactionId = scanner.nextInt();
-            transactionService.deleteTransactionById(transactionId);
+            transactionService.deleteTransactionId(transactionId);
           }
           case 2 -> {
             System.out.println("Enter user id: ");
@@ -348,7 +346,7 @@ public class Admin extends User {
   }
 
   public void viewAllTransactions() throws SQLException {
-    List<Transaction> transactions = transactionService.getAllTransactions();
+    List<Transaction> transactions = transactionService.getAllTransaction();
     for (Transaction transaction : transactions) {
       System.out.println("Transaction id: " + transaction.getTransactionId() + "\nBook id: " + transaction.getBookId()
               + "\nUser id: " + transaction.getUserId() + "\nCheckout date: " + transaction.getCheckoutDate()

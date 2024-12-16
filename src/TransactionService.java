@@ -1,60 +1,117 @@
 import java.sql.*;
+import java.sql.Date;
 import java.util.List;
 
 public class TransactionService {
-    private TransactionDataAO transactionDataAO=new TransactionDataAO();
+    private TransactionDataAO tranDAO=new TransactionDataAO();
+    private UserService userService =new UserService();
+    private BookService bookService=new BookService();
+    public void addTransaction(int userId,int bookId)throws SQLException{
+        String query = "Select price from books where book_id = ?";
+        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
+        stmt.setInt(1, bookId);
+        ResultSet rs = stmt.executeQuery();
+        int price = 0;
+        while (rs.next()) {
+            price = rs.getInt("price");
+        }
+        if(userService.getUserById(userId)==null)
+            System.out.println("this User ID does not exist! ");
+        else if(bookService.getBookById(bookId)==null)
+            System.out.println("this Book ID does not exist! ");
+        else
+            tranDAO.addTransaction(userId,bookId,price);
+    }
+    public void updateTransactionUserId(int transactionId,int userId) throws SQLException{
+        if (getTransactionById(transactionId)==null)
+            System.out.println("this transaction does not exist! ");
 
-    public void addTransaction(int userId, int bookId,int cost, Date checkoutDate) throws SQLException {
-        transactionDataAO.addTransaction(userId,bookId,cost, checkoutDate);
+        else if(userService.getUserById(userId)==null)
+            System.out.println("this User ID does not exist! ");
+        else
+            tranDAO.updateTransactionUserId(transactionId,userId);
     }
-    public void updateTransactionCost(int transactionId,int newCost) throws SQLException {
-        transactionDataAO.updateTransactionCost(transactionId,newCost);
+
+    public void updateTransactionBookId(int transactionId,int bookId) throws SQLException{
+        if (getTransactionById(transactionId)==null)
+            System.out.println("this transaction does not exist! ");
+        else if(bookService.getBookById(bookId)==null)
+            System.out.println("this Book ID does not exist! ");
+        else
+            tranDAO.updateTransactionBookId(transactionId,bookId);
     }
-    public void updateTransactionDate(int transactionId,Date newDate) throws SQLException {
-        transactionDataAO.updateTransactionDate(transactionId,newDate);
+
+
+    public void updateTransactionCost(int transactionId,int cost) throws SQLException {
+        if (getTransactionById(transactionId)==null)
+            System.out.println("this transaction ID does not exist! ");
+        else if (cost<0)
+            System.out.println("Cost cannot be below 0 !");
+        else
+            tranDAO.updateTransactioCost(transactionId,cost);
     }
-    public void updateTransactionBookId(int transactionId,int newBookId) throws SQLException {
-        transactionDataAO.updateTransactionBookId(transactionId,newBookId);
-    }
-    public void updateTransactionUserId(int transactionId,int newUserId) throws SQLException {
-        transactionDataAO.updateTransactionUserId(transactionId,newUserId);
-    }
-    public void deleteTransactionByUserId(int userId) throws SQLException{
-        transactionDataAO.deleteTransactionByUserId(userId);
+
+    public void deleteTransactionId(int transactionId) throws SQLException {
+        if(getTransactionById(transactionId)==null)
+            System.out.println("this transaction does not exist! ");
+        else
+            tranDAO.deleteTransaction(transactionId);
     }
     public void deleteTransactionByBookId(int bookId) throws SQLException{
-        transactionDataAO.deleteTransactionByBookId(bookId);
-    }
-    public void deleteTransactionById(int transactionId) throws SQLException{
-        transactionDataAO.deleteTransactionById(transactionId);
-    }
+        if (getTransactionByBookId(bookId)==null)
+            System.out.println("this Book ID does not exist! ");
+        else
+            tranDAO.deleteTransactionByBookid(bookId);
 
-    public List<Transaction> getTransactionByUserId(int userId) throws SQLException {
-        return transactionDataAO.getTransactionByUserId(userId);
     }
+    public void deleteTransactionByUserId(int userid) throws SQLException{
+        if (getTransactionByUserId(userid)==null)
+            System.out.println("this User ID does not exist! ");
+        else
+            tranDAO.deleteTransactionByUserid(userid);
 
-    public Transaction getTransactionById(int transactionId) throws SQLException {
-        return transactionDataAO.getTransactionById(transactionId);
+
+    }
+    public void deleteTransactionByCost(int cost) throws SQLException{
+        if (cost<0)
+            System.out.println("cost cannot be below 0 !");
+        else
+            tranDAO.deleteTransactionByCost(cost);
+
+    }
+    public List<Transaction> getAllTransaction() throws SQLException {
+        return tranDAO.getAllTransactions();
     }
 
     public List<Transaction> getTransactionByBookId(int bookId) throws SQLException {
-        return transactionDataAO.getTransactionByBookId(bookId);
+        return tranDAO.getTransactionByBookId(bookId);
     }
 
-    public List<Transaction> getAllTransactions() throws SQLException {
-        return transactionDataAO.getAllTransactions();
-    }
-    public int getAllSalesByBookId(int bookId) throws SQLException {
-        return transactionDataAO.getAllSalesByBookId(bookId);
-    }
-    public int getAllRevenue() throws SQLException {
-        return transactionDataAO.getAllRevenue();
+    public List<Transaction> getTransactionByUserId(int userId) throws SQLException {
+        return tranDAO.getTransactionByUserId(userId);
     }
 
-    public boolean checkIfTransactionExists(int transactionId) throws SQLException {
-        if(transactionDataAO.getTransactionById(transactionId) != null)
-            return true;
-        else
-            return false;
+    public Transaction getTransactionById(int transactionId) throws SQLException
+    {
+        return tranDAO.getTransactionById(transactionId);
+    }
+    public Transaction getAllSales(){
+
+        return null;
+    }
+    public List<Transaction> getTransactionByCost(int cost) throws SQLException {
+
+        return tranDAO.getTransactionByCost(cost);
+    }
+
+    public boolean isBookAvailable(int bookId) throws SQLException {
+        BookService bookService = new BookService();
+        return bookService.checkIfBookIsAvailable(bookId);
+    }
+
+    public void updateAvailableBooksAfterCheckout(int bookId) throws SQLException {
+        BookService bookService = new BookService();
+        Book book = bookService.getBookById(bookId);
+        bookService.updateAvailableCopies(bookId, book.getAvailableBooks()-1);
     }
 }

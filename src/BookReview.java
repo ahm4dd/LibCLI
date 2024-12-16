@@ -3,15 +3,13 @@ public class BookReview {
     private int user_id;
     private int book_id;
     private int rating;
-    private String review;
 
 
-    BookReview(int review_id, int user_id, int book_id, int rating, String review){
+    BookReview(int review_id, int user_id, int book_id, int rating){
         this.review_id = review_id;
         this.user_id = user_id;
         this.book_id = book_id;
         this.rating = rating;
-        this.review = review;
     }
 
     public int getReview_id() {
@@ -44,13 +42,5 @@ public class BookReview {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
     }
 }

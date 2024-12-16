@@ -4,12 +4,12 @@ import java.util.List;
 
 public class BookReviewDataAO {
 
-    public void addBookReview(int user_id,int bookId,String review) throws SQLException {
-        String query = "insert into book_review (book_id, user_id, review) VALUES (?, ?, ?)";
+    public void addBookReview(int user_id,int bookId,int rating) throws SQLException {
+        String query = "insert into book_review (book_id, user_id, rating) VALUES (?, ?, ?)";
         PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
         stmt.setInt(1, bookId);
         stmt.setInt(2, user_id);
-        stmt.setString(3, review);
+        stmt.setInt(3, rating);
         int resultSet = stmt.executeUpdate();
     }
 
@@ -31,8 +31,7 @@ public class BookReviewDataAO {
             int user_id = resultSet.getInt("user_id");
             int book_id = resultSet.getInt("book_id");
             int rating = resultSet.getInt("rating");
-            String review = resultSet.getString("review");
-            BookReview bookReview = new BookReview(review_id, user_id, book_id, rating, review);
+            BookReview bookReview = new BookReview(review_id, user_id, book_id, rating);
             return bookReview;
         }
         return null;
@@ -59,13 +58,6 @@ public class BookReviewDataAO {
         int resultSet = stmt.executeUpdate();
     }
 
-    public void updateBookReview(int reviewId, String newReview) throws SQLException {
-        String query = "Update book_review set review = ? where review_id = "+reviewId;
-        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
-        stmt.setString(1,newReview);
-        int resultSet = stmt.executeUpdate();
-    }
-
     public List<BookReview> getAllBookReviewsForBook(int bookId) throws SQLException {
         List<BookReview> reviews = new ArrayList<BookReview>();
         String query = "select * from book_review where book_id = ?";
@@ -77,8 +69,7 @@ public class BookReviewDataAO {
             int review_id = resultSet.getInt("review_id");
             int user_id = resultSet.getInt("user_id");
             int rating = resultSet.getInt("rating");
-            String reviewText = resultSet.getString("review");
-            BookReview bookReview = new BookReview(review_id, user_id, bookId, rating, reviewText);
+            BookReview bookReview = new BookReview(review_id, user_id, bookId, rating);
             reviews.add(bookReview);
         }
         return reviews;
@@ -95,8 +86,7 @@ public class BookReviewDataAO {
             int review_id = resultSet.getInt("review_id");
             int book_id = resultSet.getInt("book_id");
             int rating = resultSet.getInt("rating");
-            String reviewText = resultSet.getString("review");
-            BookReview bookReview = new BookReview(review_id, userId, book_id, rating, reviewText);
+            BookReview bookReview = new BookReview(review_id, userId, book_id, rating);
             reviews.add(bookReview);
         }
         return reviews;

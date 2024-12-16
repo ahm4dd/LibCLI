@@ -1,4 +1,4 @@
-import java.sql.Date;
+import java.util.Date;
 
 public class Transaction {
     private int transactionId;
@@ -11,9 +11,10 @@ public class Transaction {
         this.transactionId = transactionId;
         this.userId = userId;
         this.bookId = bookId;
-        this.checkoutDate = checkoutDate;
+        this.checkoutDate = new Date();
         this.cost=cost;
     }
+
 
     public int getTransactionId() {
         return transactionId;
@@ -54,4 +55,5 @@ public class Transaction {
     public void setCost(int cost) {
         this.cost = cost;
     }
+
 }
