@@ -223,7 +223,6 @@ public class TransactionDataAO {
         int cost=0;
         if(rs.next()){
             cost=rs.getInt("sum(cost)");
-
         }
         return cost;
     }

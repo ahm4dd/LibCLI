@@ -37,12 +37,6 @@ public class BookReviewDataAO {
         return null;
     }
 
-    public void updateBookReviewUserId(int reviewId, int newUserId) throws SQLException {
-        String query = "Update book_review set user_id = ? where review_id = "+reviewId;
-        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
-        stmt.setInt(1,newUserId);
-        int resultSet = stmt.executeUpdate();
-    }
 
     public void updateBookReviewBookId(int reviewId, int newBookId) throws SQLException {
         String query = "Update book_review set book_id = ? where review_id = "+reviewId;

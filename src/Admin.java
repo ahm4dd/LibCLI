@@ -1,11 +1,12 @@
-import javax.xml.transform.sax.SAXSource;
-import java.util.List;
 import java.sql.*;
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Admin extends User {
   private UserService userService = new UserService();
   private BookService bookService = new BookService();
+  private BookReviewService bookReviewService = new BookReviewService();
   private TransactionService transactionService = new TransactionService();
   private AuthorService authorService = new AuthorService();
   private CategoryService categoryService = new CategoryService();
@@ -16,491 +17,584 @@ public class Admin extends User {
 
   public void accessLibrarySystem() throws SQLException {
     System.out.println(
-            "1.Add book 2.Remove book 3.Manage user 4.Update book 5.View all users\n" +
-                    "6.Search book 7.Search user 8.Search transaction 9.Add transaction 10.Modify transaction\n" +
-                    "11.View all books 12.View all transactions 13.Add author 14.Manage Author 15.Add category\n" +
-                    "16.View all categories 17.Manage category 18.Search category 19.View all authors 20.Search author 21.Get books by author: ");
+            "1.Book Menu 2.Transaction Menu 3.Member Menu 4.Author Menu 5.Book Review Menu 6.Category Menu 7..: ");
     {
       Scanner scanner = new Scanner(System.in);
       int option = scanner.nextInt();
       switch (option) {
-        case 1 -> addBook();
-        case 2 -> removeBook();
-        case 3 -> manageMember();
-        case 4 -> updateBook();
-        case 5 -> viewAllUsers();
-        case 6 -> searchBook();
-        case 7 -> searchUser();
-        case 8 -> searchTransaction();
-        case 9 -> addTransaction();
-        case 10 -> modifyTransaction();
-        case 11 -> viewAllBooks();
-        case 12 -> viewAllTransactions();
-        case 13 -> addAuthor();
-        case 14 -> manageAuthor();
-        case 15 -> addCategory();
-        case 16 -> viewAllCategories();
-        case 17 -> manageCategory();
-        case 18 -> searchCategory();
-        case 19 -> viewAllAuthors();
-        case 20 -> searchAuthor();
-        case 21 -> getBooksByAuthor();
+        case 1 -> bookMenu();
+        case 2 -> transactionMenu();
+        case 3 -> memberMenu();
+        case 4 -> authorMenu();
+        case 5 -> bookReviewMenu();
+        case 6 -> categoryMenu();
       }
+
     }
   }
 
-  public void addBook() throws SQLException {
+  public void bookMenu() throws SQLException {
+    System.out.println("choose one\n 1.Add Book 2.Update Book Title 3.Update Book Author 4.Update Book ISBN 5.Book Available Copies 6.Update Book Category 7.Update Book Price" +
+            "8.Delete Book 9.Delete All Books 10.Search Books By Keyword 11.Search Books By ISBN 12.Search Books By Category 13.Check If Book Is Available 14.Update Available Copies");
     Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter title: ");
-    String title = scanner.nextLine();
-    System.out.println("Enter author id: ");
-    int authorId = scanner.nextInt();
-    System.out.println("Enter category id: ");
-    int categoryId = scanner.nextInt();
-    System.out.println("Enter ISBN: ");
-    String isbn = scanner.next();
-    System.out.println("Enter price: ");
-    int price = scanner.nextInt();
-    System.out.println("Enter available copies: ");
-    int availableCopies = scanner.nextInt();
-    bookService.addBook(title, authorId, categoryId, isbn, price,availableCopies);
+    int option = scanner.nextInt();
+    if (option == 1) {
+      System.out.println("Enter book details: ");
+      System.out.println("Enter title: ");
+      String title = scanner.nextLine();
+      System.out.println("Enter author id: ");
+      int authorId = scanner.nextInt();
+      System.out.println("Enter category id: ");
+      int categoryId = scanner.nextInt();
+      System.out.println("Enter ISBN: ");
+      String isbn = scanner.next();
+      System.out.println("Enter price: ");
+      int price = scanner.nextInt();
+      System.out.println("Enter available copies: ");
+      int availableCopies = scanner.nextInt();
+      bookService.addBook(title, authorId, categoryId, isbn, price, availableCopies);
+    }
+    if (option == 2) {
+      System.out.println("Enter book id: ");
+      int bookId = scanner.nextInt();
+      System.out.println("Enter new title: ");
+      String newTitle = scanner.next();
+      bookService.updateBookTitle(bookId, newTitle);
+
+    }
+    if (option == 3) {
+      System.out.println("Enter book id: ");
+      int bookId = scanner.nextInt();
+      System.out.println("Enter new author id: ");
+      int newAuthorId = scanner.nextInt();
+      bookService.updateBookAuthor(bookId, newAuthorId);
+    }
+    if (option == 4) {
+      System.out.println("Enter book id: ");
+      int bookId = scanner.nextInt();
+      System.out.println("Enter new ISBN: ");
+      String newIsbn = scanner.next();
+      bookService.updateBookIsbn(bookId, newIsbn);
+    }
+    if (option == 5) {
+      System.out.println("Enter book id: ");
+      int bookId = scanner.nextInt();
+      System.out.println();
+      System.out.println("Enter new available copies: ");
+      int newAvailableCopies = scanner.nextInt();
+      bookService.updateAvailableCopies(bookId, newAvailableCopies);
+    }
+    if (option == 6) {
+      System.out.println("Enter book id: ");
+      int bookId = scanner.nextInt();
+      System.out.println("Enter new category id: ");
+      int newCategoryId = scanner.nextInt();
+      bookService.updateBookCategory(bookId, newCategoryId);
+    }
+    if (option == 7) {
+      System.out.println("Enter book id: ");
+      int bookId = scanner.nextInt();
+      System.out.println("Enter new price: ");
+      int newPrice = scanner.nextInt();
+      bookService.updateBookPrice(bookId, newPrice);
+    }
+    if (option == 8) {
+      System.out.println("Enter book id: ");
+      int bookId = scanner.nextInt();
+      bookService.deleteBook(bookId);
+    }
+    if (option == 9) {
+      System.out.println("Are you sure! (Y/N)");
+      String answer = scanner.next();
+      if (answer.equalsIgnoreCase("Y"))
+          bookService.deleteAllBooks();
+    }
+    if (option == 10) {
+      System.out.println("Enter keyword to search: ");
+      String keyword = scanner.next();
+      List<Book> books = bookService.searchBooks(keyword);
+      for (Book book : books) {
+        System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\n Book Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
+      }
+    }
+    if (option == 11) {
+      System.out.println("Enter isbn to search: ");
+      String isbn = scanner.next();
+      Book book = bookService.searchBooksByIsbn(isbn);
+      System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\n Book Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
+    }
+    if (option == 12) {
+      System.out.println("Enter category to search: ");
+      int categoryId = scanner.nextInt();
+      List<Book> books = bookService.searchBookByCategory(categoryId);
+      for (Book book : books) {
+        System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\n Book Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
+      }
+    }
+    if (option == 13) {
+      System.out.println("Enter book id to check: ");
+      int bookId = scanner.nextInt();
+      bookService.checkIfBookIsAvailable(bookId);
+    }
+    if (option == 14) {
+      System.out.println("Enter book id to search: ");
+      int bookId = scanner.nextInt();
+      System.out.println("Enter new available copies: ");
+      int newAvailableCopies = scanner.nextInt();
+      bookService.updateAvailableCopies(bookId, newAvailableCopies);
+    }
+    else
+      System.out.println("Invalid option!");
   }
 
-  public void removeBook() throws SQLException {
+  public void transactionMenu() throws SQLException {
     Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter book id: ");
-    int bookId = scanner.nextInt();
-    bookService.deleteBook(bookId);
+    System.out.println("1.Add Transaction 2.Update Transaction Cost 3.Update Transaction Book Id 4.Update Transaction User Id 5.Get Transaction By Id 6.Get Transaction By User Id" +
+            "7.Get Transaction By Book Id 8.Get All Transactions 9.Get All Profit By Book 10.Get All Revenue 11.Delete Transaction By User Id 12.Delete Transaction By Book Id 13.Delete Transaction By Id");
+    int option = scanner.nextInt();
+    if (option == 1) {
+      System.out.println("enter userId: ");
+      int userID = scanner.nextInt();
+      System.out.println("enter bookId: ");
+      int bookId = scanner.nextInt();
+
+      transactionService.addTransaction(userID, bookId);
+    }
+    if (option == 2) {
+      System.out.println("transactionId: ");
+      int transactionId = scanner.nextInt();
+      System.out.println("enter cost: ");
+      int cost = scanner.nextInt();
+      transactionService.updateTransactionCost(transactionId, cost);
+    }
+    if (option == 3) {
+      System.out.println("transactionId: ");
+      int transactionId = scanner.nextInt();
+      System.out.println("enter bookId: ");
+      int bookId = scanner.nextInt();
+      transactionService.updateTransactionBookId(transactionId, bookId);
+    }
+    if (option == 4) {
+      System.out.println("transactionId: ");
+      int transactionId = scanner.nextInt();
+      System.out.println("enter userId: ");
+      int userId = scanner.nextInt();
+      transactionService.updateTransactionUserId(transactionId, userId);
+    }
+    if (option == 5) {
+      System.out.println("transactionId: ");
+      int transactionId = scanner.nextInt();
+      Transaction transaction = transactionService.getTransactionById(transactionId);
+      System.out.println("Transaction id: "+transaction.getTransactionId()+"\nTransaction Book Id: " + transaction.getBookId() + "\nTransaction User Id: " + transaction.getUserId() + "\nTransaction cost: " + transaction.getCost() + "\nTransaction checkout date: " + transaction.getCheckoutDate());
+    }
+    if (option == 6) {
+      System.out.println("UserId: ");
+      int userId = scanner.nextInt();
+      List<Transaction> transactions = transactionService.getTransactionByUserId(userId);
+      for(Transaction transaction : transactions){
+        System.out.println("Transaction id: "+transaction.getTransactionId()+"\nTransaction Book Id: " + transaction.getBookId() + "\nTransaction User Id: " + transaction.getUserId() + "\nTransaction cost: " + transaction.getCost() + "\nTransaction checkout date: " + transaction.getCheckoutDate());
+      }
+    }
+    if (option == 7) {
+      System.out.println("bookId: ");
+      int bookId = scanner.nextInt();
+      List<Transaction> transactions = transactionService.getTransactionByBookId(bookId);
+      for(Transaction transaction : transactions){
+        System.out.println("Transaction id: "+transaction.getTransactionId()+"\nTransaction Book Id: " + transaction.getBookId() + "\nTransaction User Id: " + transaction.getUserId() + "\nTransaction cost: " + transaction.getCost() + "\nTransaction checkout date: " + transaction.getCheckoutDate());
+      }
+    }
+    if (option == 8) {
+      List<Transaction> transactions = transactionService.getAllTransaction();
+      for(Transaction transaction : transactions){
+        System.out.println("Transaction id: "+transaction.getTransactionId()+"\nTransaction Book Id: " + transaction.getBookId() + "\nTransaction User Id: " + transaction.getUserId() + "\nTransaction cost: " + transaction.getCost() + "\nTransaction checkout date: " + transaction.getCheckoutDate());
+      }
+    }
+    if (option == 9) {
+      System.out.println("enter bookId: ");
+      int bookId = scanner.nextInt();
+      int profit = transactionService.getAllSalesBooks(bookId);
+      System.out.println("Money generated by this book: " + profit);
+
+    }
+    if (option == 10) {
+      int revenue = transactionService.getAllRevenue();
+      System.out.println("Total revenue: " + revenue);
+    }
+    if (option == 11) {
+      System.out.println("enter userId: ");
+      int userId = scanner.nextInt();
+      System.out.println("are you sure? (Y/N)");
+      String answer = scanner.next();
+      if (answer.equalsIgnoreCase("Y"))
+        transactionService.deleteTransactionByUserId(userId);
+      else
+        return;
+    }
+    if (option == 12) {
+      System.out.println("enter bookId: ");
+      int bookId = scanner.nextInt();
+      System.out.println("are you sure? (Y/N)");
+      String answer = scanner.next();
+      if (answer.equalsIgnoreCase("Y"))
+        transactionService.deleteTransactionByBookId(bookId);
+      else
+        return;
+
+    }
+    if (option == 13) {
+      System.out.println("enter transactionId: ");
+      int transactionId = scanner.nextInt();
+      System.out.println("are you sure? (Y/N)");
+      String answer = scanner.next();
+      if (answer.equalsIgnoreCase("Y"))
+        transactionService.deleteTransactionId(transactionId);
+
+
+    } else
+      System.out.println("Invalid option!");
   }
 
-  public void manageMember() throws SQLException {
+  public void memberMenu() throws SQLException {
     Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter user id: ");
-    int userId = scanner.nextInt();
-
-    User user = userService.getUserById(userId);
-    if (user == null) {
-      System.out.println("couldn't find the user");
-    } else if (user.getUserType().equalsIgnoreCase("Admin")) {
-      System.out.println("Cannot display an admin user!");
-    } else {
-      System.out.println("User id: " + user.getUserId() + "\nUsername: " + user.getUsername() + "\nPassword: "
-              + user.getPassword() + "\nEmail: " + user.getEmail());
-
-      System.out.println("Enter what you want to change 1.Username 2.Password 3.Email: ");
-      int option = scanner.nextInt();
-      switch (option) {
+    System.out.println("1.Add Member 2.Update Member 3.Remove Member 4.Search Member");
+    int option = scanner.nextInt();
+    if (option == 1) {
+      System.out.println("Enter username: ");
+      String username = scanner.next();
+      System.out.println("Enter password: ");
+      String password = scanner.next();
+      System.out.println("Enter email: ");
+      String email = scanner.next();
+      userService.registerUser(username, password, email, "Member");
+    }
+    if (option == 2) {
+      System.out.println("Enter what you want to update 1.Username 2.Password 3.Email: ");
+      int option2 = scanner.nextInt();
+      switch (option2) {
         case 1 -> {
-          System.out.println("Enter new username: ");
+          System.out.println("Enter user id: ");
+          int userId = scanner.nextInt();
+          System.out.println("Enter old username: ");
+          String oldUsername = scanner.nextLine();
+          System.out.println("Enter password: ");
+          String password = scanner.nextLine();
+          System.out.println("enter new username: ");
           String newUsername = scanner.next();
-          userService.updateUsername(user.getUserId(), user.getUsername(), newUsername);
+          userService.updateUsername(userId, oldUsername,password, newUsername);
         }
         case 2 -> {
+          System.out.println("Enter user id: ");
+          int userId = scanner.nextInt();
+          System.out.println("Enter old password: ");
+          String oldPassword = scanner.next();
           System.out.println("Enter new password: ");
           String newPassword = scanner.next();
-          userService.updatePassword(user.getUserId(), user.getPassword(), newPassword);
+          userService.updatePassword(userId, oldPassword, newPassword);
         }
         case 3 -> {
-          System.out.println("Enter new email: ");
+          System.out.println("Enter user id: ");
+          int userId = scanner.nextInt();
+          System.out.println("Enter old email: ");
+          String oldEmail = scanner.nextLine();
+          System.out.println("Enter password: ");
+          String password = scanner.nextLine();
+          System.out.println("enter new email: ");
           String newEmail = scanner.next();
-          userService.updateEmail(user.getUserId(), user.getEmail(), newEmail);
+          userService.updateEmail(userId,password,oldEmail,newEmail);
         }
-        default -> System.out.println("Invalid choice!");
+        default -> System.out.println("invalid option!");
       }
     }
-  }
-
-  public void updateBook() throws SQLException {
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter book id: ");
-    int bookId = scanner.nextInt();
-    Book book = bookService.getBookById(bookId);
-    if (book == null) {
-      System.out.println("Couldn't find the book provided!");
-    } else {
-      System.out.println("Book id: " + book.getBookId() + "\nTitle: " + book.getTitle() + "\nAuthor id: "
-              + book.getAuthor() + "ISBN: " + book.getIsbn() + "\nAvailable copies: " + book.getAvailableBooks() + "\nCategory id: " + book.getCategory());
-      System.out.println("\n1.Enter what you want to change 1.Title 2.Author 3.ISBN 4.Available copies 5.Category id 6.Price: ");
-      int option = scanner.nextInt();
-
-      switch (option) {
+    if (option == 3) {
+      System.out.println("Enter user id: ");
+      int userId = scanner.nextInt();
+      System.out.println("Are you sure? (Y/N)");
+      String answer = scanner.next();
+      if (answer.equalsIgnoreCase("Y"))
+        userService.deleteUser(userId);
+      else
+        return;
+    }
+    if (option == 4) {
+      System.out.println("Enter how do you want to find user 1.Username 2.Email 3.All users 4.ID");
+      int option2 = scanner.nextInt();
+      switch (option2) {
         case 1 -> {
-          System.out.println("Enter new title: ");
-          String newTitle = scanner.next();
-          bookService.updateBookTitle(book.getBookId(), newTitle);
+          System.out.println("Enter username: ");
+          String username = scanner.next();
+          User user = userService.getUserByUsername(username);
+          System.out.println("User id: " + user.getUserId() + "\nUser username: " + user.getUsername() + "\nUser password: " + user.getPassword() + "\nUser email: " + user.getEmail() +"\nUser role: " + user.getUserType());
         }
-
         case 2 -> {
-          System.out.println("Enter new author ID: ");
-          int newAuthorId = scanner.nextInt();
-          bookService.updateBookAuthor(book.getBookId(), newAuthorId);
+          System.out.println("Enter email: ");
+          String email = scanner.next();
+          User user = userService.getUserByEmail(email);
+          System.out.println("User id: " + user.getUserId() + "\nUser username: " + user.getUsername() + "\nUser password: " + user.getPassword() + "\nUser email: " + user.getEmail() +"\nUser role: " + user.getUserType());
         }
-
         case 3 -> {
-          System.out.println("Enter new ISBN: ");
-          String newIsbn = scanner.next();
-          bookService.updateBookIsbn(book.getBookId(), newIsbn);
+          List<User> users = userService.getAllUsers();
+          for(User user : users){
+            System.out.println("User id: " + user.getUserId() + "\nUser username: " + user.getUsername() + "\nUser password: " + user.getPassword() + "\nUser email: " + user.getEmail() +"\nUser role: " + user.getUserType());
+          }
         }
-
         case 4 -> {
-          System.out.println("Enter new available copies: ");
-          int newAvailableCopies = scanner.nextInt();
-          bookService.updateAvailableCopies(book.getBookId(), newAvailableCopies);
+          System.out.println("Enter user id: ");
+          int userId = scanner.nextInt();
+          User user = userService.getUserById(userId);
+          System.out.println("User id: " + user.getUserId() + "\nUser username: " + user.getUsername() + "\nUser password: " + user.getPassword() + "\nUser email: " + user.getEmail() +"\nUser role: " + user.getUserType());
+        }
+        default -> System.out.println("Invalid option!");
+      }
+
+    } else
+      System.out.println("Invalid option!");
+
+
+  }
+
+  public void authorMenu() throws SQLException {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("1.Add Author 2.Update Author 3.Remove Author 4.Search Author");
+    int option = scanner.nextInt();
+    if (option == 1) {
+      System.out.println("Enter name: ");
+      String name = scanner.next();
+      System.out.println("Enter email: ");
+      String email = scanner.next();
+      System.out.println("enter bio: ");
+      String bio = scanner.next();
+      authorService.addAuthor(name, email, bio);
+    }
+    if (option == 2) {
+      System.out.println("Enter what do you want to update from author 1.FirstName 2.LastName 3.Bio: ");
+      int option2 = scanner.nextInt();
+      switch (option2) {
+        case 1 -> {
+          System.out.println("Enter author id: ");
+          int authorId = scanner.nextInt();
+          System.out.println("Enter first name: ");
+          String firstName = scanner.next();
+          authorService.updateFirstName(authorId, firstName);
+        }
+        case 2 -> {
+          System.out.println("Enter author id: ");
+          int authorId = scanner.nextInt();
+          System.out.println("Enter last name: ");
+          String lastName = scanner.next();
+          authorService.updateLastName(authorId, lastName);
+        }
+        case 3 -> {
+          System.out.println("Enter author id: ");
+          int authorId = scanner.nextInt();
+          System.out.println("Enter bio: ");
+          String bio = scanner.next();
+          authorService.updateBio(authorId, bio);
+        }
+        default -> System.out.println("Invalid option!");
+      }
+    }
+    if (option == 3) {
+      System.out.println("Enter author id: ");
+      int authorId = scanner.nextInt();
+      System.out.println("Are you sure? (Y/N)");
+      String answer = scanner.next();
+      if (answer.equalsIgnoreCase("Y"))
+        authorService.deleteAuthor(authorId);
+      else
+        return;
+    }
+    if (option == 4) {
+      System.out.println("Enter how do you want to find author 1.ID 2.All Authors");
+      int option2 = scanner.nextInt();
+      switch (option2) {
+        case 1 -> {
+          System.out.println("Enter author ID: ");
+          int authorId = scanner.nextInt();
+          Author author = authorService.getAuthorById(authorId);
+          System.out.println("Author id:" + author.getAuthorId() +"\nAuthor full name: " + author.getFirstName()+ " " + author.getLastName() + "\nAuthor bio: "+author.getBio());
+        }
+        case 2 -> {
+          List<Author> authors = authorService.getAllAuthors();
+          for(Author author : authors){
+            System.out.println("Author id:" + author.getAuthorId() +"\nAuthor full name: " + author.getFirstName()+ " " + author.getLastName() + "\nAuthor bio: "+author.getBio());
+          }
         }
 
-        case 5 -> {
-          System.out.println("Enter new category id: ");
-          int newCategoryId = scanner.nextInt();
-          bookService.updateBookCategory(book.getBookId(), newCategoryId);
-        }
-
-        case 6 -> {
-          System.out.println("Enter new price: ");
-          int newPrice = scanner.nextInt();
-          bookService.updateBookPrice(book.getBookId(), newPrice);
-        }
+        default -> System.out.println("Invalid option!");
       }
     }
   }
 
-  public void viewAllUsers() throws SQLException {
-    List<User> users = userService.getAllUsers();
-    for (User user : users) {
-      if (user.getUserType().equalsIgnoreCase("Member"))
-        System.out.println("------------------------------\nUser Id: " + user.getUserId() + "\nUsername: "
-                + user.getUsername() + "\nPassword: " + user.getPassword() + "\nEmail: " + user.getEmail());
-      else if (user.getUserType().equalsIgnoreCase("Admin"))
-        System.out.println("------------------------------\nUser Id: " + user.getUserId() + "\nUsername: "
-                + user.getUsername() + "\nEmail: " + user.getEmail());
-    }
-  }
-
-  public void searchBook() throws SQLException {
-    System.out.println("Enter book title: ");
+  public void bookReviewMenu() throws SQLException {
     Scanner scanner = new Scanner(System.in);
-    String title = scanner.next();
-    List<Book> book = bookService.searchBooks(title);
-    for (Book book1 : book) {
-      System.out.println("------------------------------\nBook id: " + book1.getBookId() + "\nTitle: "
-              + book1.getTitle() + "\nAuthor: " + book1.getAuthor() + "\nISBN: " + book1.getIsbn() + "\nAvailable copies: "
-              + book1.getAvailableBooks() + "\nCategory id: " + book1.getCategory() + "\nPrice: " + book1.getPrice());
+    System.out.println("1.Add Book Rating 2.Update Book Rating 3.Remove Book Rating 4.Search Book Rating");
+    int option = scanner.nextInt();
+    if (option == 1) {
+      System.out.println("Enter book id: ");
+      int bookId = scanner.nextInt();
+      System.out.println("Enter rating: ");
+      int rating = scanner.nextInt();
+      bookReviewService.addBookReview(this.getUserId(), bookId, rating);
+    }
+    if (option == 2) {
+      System.out.println("Enter what you want to update 1.Book 2.Rating:");
+      int option2 = scanner.nextInt();
+      switch (option2) {
+        case 1 -> {
+          System.out.println("Enter Review Id: ");
+          int reviewId = scanner.nextInt();
+          System.out.println("Enter new book id: ");
+          int newBookId = scanner.nextInt();
+          bookReviewService.updateBookReviewBookId(reviewId,newBookId);
+        }
+        case 2 -> {
+          System.out.println("Enter review id: ");
+          int reviewId = scanner.nextInt();
+          System.out.println("Enter rating: ");
+          int newRating = scanner.nextInt();
+          bookReviewService.updateBookReviewForUser(reviewId,this.getUserId(),newRating);
+        }
+        default -> System.out.println("Invalid option!");
+      }
+    }
+    if (option == 3) {
+      System.out.println("How you want to delete the review of the books 1.ID 2.User 3.Book 4.All By User");
+      int option2 = scanner.nextInt();
+      switch (option2) {
+        case 1 -> {
+          System.out.println("Enter book id: ");
+          int bookId = scanner.nextInt();
+          System.out.println("Are sure? (Y/N)");
+          String answer = scanner.next();
+          if (answer.equalsIgnoreCase("Y"))
+            bookReviewService.deleteBookReview(bookId);
+        }
+        case 2 -> {
+          System.out.println("Enter review ID: ");
+          int reviewId = scanner.nextInt();
+          System.out.println("Enter user id: ");
+          int userId = scanner.nextInt();
+          System.out.println("Are sure? (Y/N)");
+          String answer = scanner.next();
+          if (answer.equalsIgnoreCase("Y"))
+            bookReviewService.deleteBookReviewForUser(reviewId,userId);
+        }
+        case 3 -> {
+          System.out.println("Enter book id: ");
+          int bookId = scanner.nextInt();
+          System.out.println("Are sure? (Y/N)");
+          String answer = scanner.next();
+          if (answer.equalsIgnoreCase("Y"))
+            bookReviewService.deleteAllBookReviewsForBook(bookId);
+        }
+        case 4 -> {
+          System.out.println("enter user id: ");
+          int userId = scanner.nextInt();
+          System.out.println("Are sure? (Y/N)");
+          String answer = scanner.next();
+          if (answer.equalsIgnoreCase("Y"))
+            bookReviewService.deleteAllBookReviewsForUser(userId);
+        }
+        default -> System.out.println("Invalid option!");
+      }
+    }
+    if (option == 4) {
+      System.out.println("How do want to search for book Review 1.ID 2.Book 3.User");
+      int op2=scanner.nextInt();
+      switch (op2){
+        case 1->{
+          System.out.println("Enter book review ID: ");
+          int reviewId = scanner.nextInt();
+          BookReview bookReview = bookReviewService.getBookReviewById(reviewId);
+          System.out.println("Review id: " + bookReview.getReview_id() +"\nReview book id: " + bookReview.getBook_id() + "\nReview user id: "+bookReview.getUser_id() + "\nRating: "+ bookReview.getRating());
+        }
+        case 2->{
+          System.out.println("Enter book id: ");
+          int bookId = scanner.nextInt();
+          List<BookReview> bookReviews = bookReviewService.getAllBookReviewsForBook(bookId);
+          for(BookReview bookReview : bookReviews){
+            System.out.println("Review id: " + bookReview.getReview_id() +"\nReview book id: " + bookReview.getBook_id() + "\nReview user id: "+bookReview.getUser_id() + "\nRating: "+ bookReview.getRating());
+          }
+        }
+        case 3->{
+          System.out.println("Enter user id: ");
+          int userId = scanner.nextInt();
+          List<BookReview> bookReviews = bookReviewService.getAllBookReviewsForUser(userId);
+          for(BookReview bookReview : bookReviews){
+            System.out.println("Review id: " + bookReview.getReview_id() +"\nReview book id: " + bookReview.getBook_id() + "\nReview user id: "+bookReview.getUser_id() + "\nRating: "+ bookReview.getRating());
+          }
+        }
+        default->System.out.println("Invalid option!");
+      }
     }
   }
 
-  public void searchUser() throws SQLException {
-    System.out.println("Enter search by 1.UserID 2.Username 3.Email: ");
+  public void categoryMenu() throws SQLException {
+    System.out.println("1.Add Category 2.Update Category 3.Remove Category 4.Search Category");
     Scanner scanner = new Scanner(System.in);
     int option = scanner.nextInt();
-    switch (option) {
-      case 1 -> {
-        System.out.println("Enter user id: ");
-        int userId = scanner.nextInt();
-        User user = userService.getUserById(userId);
-        if (user.getUserType().equalsIgnoreCase("Member")) {
-          System.out.println("User id: " + user.getUserId() + "\nUsername: " + user.getUsername() + "\nPassword: "
-                  + user.getPassword() + "\nEmail: " + user.getEmail());
-        } else {
-          System.out.println(
-                  "User id: " + user.getUserId() + "\nUsername: " + user.getUsername() + "\nEmail: " + user.getEmail());
+    if (option == 1) {
+      System.out.println("Enter name: ");
+      String name = scanner.nextLine();
+      System.out.println("Enter description: ");
+      String description = scanner.next();
+      categoryService.addCategory(name, description);
+    }
+    if (option == 2) {
+      System.out.println("Enter which you want to update the category 1.Name 2.Description");
+      int option2 = scanner.nextInt();
+      switch (option2) {
+        case 1 -> {
+          System.out.println("Enter category id: ");
+          int categoryId = scanner.nextInt();
+          System.out.println("Enter new name: ");
+          String newName = scanner.next();
+          categoryService.updateCategoryName(categoryId, newName);
         }
+        case 2 -> {
+          System.out.println("Enter category id: ");
+          int categoryId = scanner.nextInt();
+          System.out.println("Enter new description: ");
+          String newDescription = scanner.next();
+          categoryService.updateCategoryDescription(categoryId, newDescription);
+        }
+        default -> System.out.println("Invalid option!");
       }
-
-      case 2 -> {
-        System.out.println("Enter username: ");
-        String username = scanner.next();
-        User user = userService.getUserByUsername(username);
-        if (user.getUserType().equalsIgnoreCase("Member")) {
-          System.out.println("User id: " + user.getUserId() + "\nUsername: " + user.getUsername() + "\nPassword: "
-                  + user.getPassword() + "\nEmail: " + user.getEmail());
-        } else {
-          System.out.println(
-                  "User id: " + user.getUserId() + "\nUsername: " + user.getUsername() + "\nEmail: " + user.getEmail());
+    }
+    if (option == 3) {
+      System.out.println("Enter category id: ");
+      int categoryId = scanner.nextInt();
+      System.out.println("Are sure? (Y/N)");
+      String answer = scanner.next();
+      if (answer.equalsIgnoreCase("Y"))
+        categoryService.deleteCategory(categoryId);
+    }
+    if (option == 4) {
+      System.out.println("Enter hwo you want to search for category: 1.ID 2.Keyword 3.All categories");
+      int option2 = scanner.nextInt();
+      switch (option2) {
+        case 1 -> {
+          System.out.println("Enter category id: ");
+          int categoryId = scanner.nextInt();
+          Category category = categoryService.getCategoryById(categoryId);
+          System.out.println("Category id: " + category.getCategory_id()+"\nCategory name: " + category.getName() + "\nCategory Description: " + category.getDescription());
         }
-      }
-
-      case 3 -> {
-        System.out.println("Enter email: ");
-        String email = scanner.next();
-        User user = userService.getUserByEmail(email);
-        if (user.getUserType().equalsIgnoreCase("Member")) {
-          System.out.println("User id: " + user.getUserId() + "\nUsername: " + user.getUsername() + "\nPassword: "
-                  + user.getPassword() + "\nEmail: " + user.getEmail());
-        } else {
-          System.out.println(
-                  "User id: " + user.getUserId() + "\nUsername: " + user.getUsername() + "\nEmail: " + user.getEmail());
+        case 2 -> {
+          List<Category> categories = categoryService.getAllCategories();
+          for(Category category : categories){
+            System.out.println("Category id: " + category.getCategory_id()+"\nCategory name: " + category.getName() + "\nCategory Description: " + category.getDescription());
+          }
         }
+        case 3 -> {
+          System.out.println("Enter keyword: ");
+          String keyword = scanner.next();
+          List<Category> categories = categoryService.searchCategories(keyword);
+          for(Category category : categories){
+            System.out.println("Category id: " + category.getCategory_id()+"\nCategory name: " + category.getName() + "\nCategory Description: " + category.getDescription());
+          }
+        }
+        default -> System.out.println("Invalid option!");
       }
     }
   }
-
-  public void searchTransaction() throws SQLException {
-    System.out.println("Enter search by 1.TransactionID 2.UserID 3.BookID: ");
-    Scanner scanner = new Scanner(System.in);
-    int option = scanner.nextInt();
-    switch (option) {
-      case 1 -> {
-        System.out.println("Enter transaction id: ");
-        int transactionId = scanner.nextInt();
-        Transaction transaction = transactionService.getTransactionById(transactionId);
-        System.out.println("Transaction id: " + transaction.getTransactionId() + "\nBook id: " + transaction.getBookId()
-                + "\nUser id: " + transaction.getUserId() + "\nCheckout date: " + transaction.getCheckoutDate()
-                + "\nCost: " + transaction.getCost());
-      }
-      case 2 -> {
-        System.out.println("Enter user id: ");
-        int userId = scanner.nextInt();
-        List<Transaction> transactions = transactionService.getTransactionByUserId(userId);
-        for (Transaction transaction : transactions) {
-          System.out.println("Transaction id: " + transaction.getTransactionId() + "\nBook id: " + transaction.getBookId()
-                  + "\nUser id: " + transaction.getUserId() + "\nCheckout date: " + transaction.getCheckoutDate()
-                  + "\nCost: " + transaction.getCost());
-        }
-      }
-
-      case 3 -> {
-        System.out.println("Enter book id: ");
-        int bookId = scanner.nextInt();
-        List<Transaction> transactions = transactionService.getTransactionByBookId(bookId);
-        for (Transaction transaction : transactions) {
-          System.out.println("Transaction id: " + transaction.getTransactionId() + "\nBook id: " + transaction.getBookId()
-                  + "\nUser id: " + transaction.getUserId() + "\nCheckout date: " + transaction.getCheckoutDate()
-                  + "\nCost: " + transaction.getCost());
-        }
-      }
-    }
-  }
-
-  public void addTransaction() throws SQLException {
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter book id: ");
-    int bookId = scanner.nextInt();
-    System.out.println("Enter user id: ");
-    int userId = scanner.nextInt();
-    System.out.println("Enter checkout date: ");
-    Date checkoutDate = Date.valueOf(scanner.next());
-    transactionService.addTransaction(userId, bookId);
-  }
-
-  public void modifyTransaction() throws SQLException {
-    System.out.println("Enter what you want to modify 1.Remove transaction 2.Update transaction: ");
-    Scanner scanner = new Scanner(System.in);
-    int option = scanner.nextInt();
-    switch (option) {
-      case 1 -> {
-        System.out.println("Enter remove by 1.TransactionID 2.UserID 3.BookID: ");
-        int option2 = scanner.nextInt();
-        switch (option2) {
-          case 1 -> {
-            System.out.println("Enter transaction id: ");
-            int transactionId = scanner.nextInt();
-            transactionService.deleteTransactionId(transactionId);
-          }
-          case 2 -> {
-            System.out.println("Enter user id: ");
-            int userId = scanner.nextInt();
-            transactionService.deleteTransactionByUserId(userId);
-          }
-          case 3 -> {
-            System.out.println("Enter book id: ");
-            int bookId = scanner.nextInt();
-            transactionService.deleteTransactionByBookId(bookId);
-          }
-        }
-      }
-      case 2 -> {
-        System.out.println("Enter modify 1.UserID 2.BookID 3.Cost: ");
-        int option2 = scanner.nextInt();
-        switch (option2) {
-          case 1 -> {
-            System.out.println("Enter transaction ID: ");
-            int transactionId = scanner.nextInt();
-            System.out.println("Enter user id: ");
-            int userId = scanner.nextInt();
-            transactionService.updateTransactionUserId(transactionId, userId);
-          }
-          case 2 -> {
-            System.out.println("Enter transaction ID: ");
-            int transactionId = scanner.nextInt();
-            System.out.println("Enter book id: ");
-            int bookId = scanner.nextInt();
-            transactionService.updateTransactionBookId(transactionId, bookId);
-          }
-          case 3 -> {
-            System.out.println("Enter transaction ID: ");
-            int transactionId = scanner.nextInt();
-            System.out.println("Enter cost: ");
-            int cost = scanner.nextInt();
-            transactionService.updateTransactionCost(transactionId, cost);
-          }
-        }
-      }
-    }
-  }
-
-
-  public void viewAllBooks() throws SQLException {
-    List<Book> books = bookService.getAllBooks();
-    for (Book book : books) {
-      System.out.println("Book id: " + book.getBookId() + "\nTitle: " + book.getTitle() + "\nAuthor id: "+ book.getAuthor() + "\nISBN: " + book.getIsbn() + "\nAvailable copies: " + book.getAvailableBooks() + "\nCategory id: " + book.getCategory() + "\nPrice: " + book.getPrice());
-    }
-  }
-
-  public void viewAllTransactions() throws SQLException {
-    List<Transaction> transactions = transactionService.getAllTransaction();
-    for (Transaction transaction : transactions) {
-      System.out.println("Transaction id: " + transaction.getTransactionId() + "\nBook id: " + transaction.getBookId()
-              + "\nUser id: " + transaction.getUserId() + "\nCheckout date: " + transaction.getCheckoutDate()
-              + "\nCost: " + transaction.getCost());
-    }
-  }
-
-  public void addAuthor() throws SQLException {
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter author first name: ");
-    String firstName = scanner.next();
-    System.out.println("Enter author last name: ");
-    String lastName = scanner.next();
-    System.out.println("Enter author bio:");
-    String bio = scanner.next();
-    authorService.addAuthor(firstName, lastName, bio);
-  }
-
-  public void manageAuthor() throws SQLException {
-    System.out.println("Enter what you want to modify 1.Remove author 2.Update author: ");
-    Scanner scanner = new Scanner(System.in);
-    int option = scanner.nextInt();
-    switch (option) {
-      case 1 -> {
-        System.out.println("Enter remove by 1.AuthorID ");
-        int option2 = scanner.nextInt();
-        switch (option2) {
-          case 1 -> {
-            System.out.println("Enter author id: ");
-            int authorId = scanner.nextInt();
-            authorService.deleteAuthor(authorId);
-          }
-        }
-      }
-      case 2 -> {
-        System.out.println("Enter modify 1.FirstName 2.LastName 3.Bio: ");
-        int option2 = scanner.nextInt();
-        switch (option2) {
-          case 1 -> {
-            System.out.println("Enter author ID: ");
-            int authorId = scanner.nextInt();
-            System.out.println("Enter first name: ");
-            String firstName = scanner.next();
-            authorService.updateFirstName(authorId, firstName);
-          }
-          case 2 -> {
-            System.out.println("Enter author ID: ");
-            int authorId = scanner.nextInt();
-            System.out.println("Enter last name: ");
-            String lastName = scanner.next();
-            authorService.updateLastName(authorId, lastName);
-          }
-          case 3 -> {
-            System.out.println("Enter author ID: ");
-            int authorId = scanner.nextInt();
-            System.out.println("Enter bio: ");
-            String bio = scanner.next();
-            authorService.updateBio(authorId, bio);
-          }
-        }
-      }
-    }
-  }
-
-  public void viewAllAuthors() throws SQLException {
-    List<Author> authors = authorService.getAllAuthors();
-    for (Author author : authors) {
-      System.out.println("Author id: " + author.getAuthorId() + "\nAuthor name: " + author.getFirstName() + " " + author.getLastName() + "\nAuthor bio: " + author.getBio() + "\n");
-    }
-  }
-
-  public void addCategory() throws SQLException {
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter category name: ");
-    String categoryName = scanner.next();
-    System.out.println("Enter category description: ");
-    String description = scanner.next();
-    categoryService.addCategory(categoryName, description);
-  }
-
-  public void manageCategory() throws SQLException {
-    System.out.println("Enter what you want to modify 1.Remove category 2.Update category: ");
-    Scanner scanner = new Scanner(System.in);
-    int option = scanner.nextInt();
-    switch (option) {
-      case 1 -> {
-        System.out.println("Enter remove by 1.CategoryID ");
-        int option2 = scanner.nextInt();
-        switch (option2) {
-          case 1 -> {
-            System.out.println("Enter category id: ");
-            int categoryId = scanner.nextInt();
-            categoryService.deleteCategory(categoryId);
-          }
-        }
-      }
-      case 2 -> {
-        System.out.println("Enter modify 1.CategoryName 2.Description: ");
-        int option2 = scanner.nextInt();
-        switch(option2){
-          case 1 -> {
-            System.out.println("Enter category ID: ");
-            int categoryId = scanner.nextInt();
-            System.out.println("Enter category name: ");
-            String categoryName = scanner.next();
-            categoryService.updateCategoryName(categoryId, categoryName);
-          }
-          case 2 -> {
-            System.out.println("Enter category ID: ");
-            int categoryId = scanner.nextInt();
-            System.out.println("Enter description: ");
-            String description = scanner.next();
-            categoryService.updateCategoryDescription(categoryId, description);
-          }
-        }
-      }
-    }
-  }
-
-  public void viewAllCategories() throws SQLException{
-    List<Category> categories = categoryService.getAllCategories();
-    for (Category category : categories) {
-      System.out.println("Category id: " + category.getCategory_id() + "\nCategory name: " + category.getName() + "\nCategory description: " + category.getDescription() + "\n");
-    }
-  }
-
-  public void searchCategory() throws SQLException{
-    System.out.println("Enter keyword: ");
-    Scanner scanner = new Scanner(System.in);
-    String keyword = scanner.next();
-    List<Category> categories = categoryService.searchCategories(keyword);
-    for (Category category : categories) {
-      System.out.println("Category id: " + category.getCategory_id() + "\nCategory name: " + category.getName() + "\nCategory description: " + category.getDescription() + "\n");
-    }
-  }
-
-  public void searchAuthor() throws SQLException {
-    System.out.println("Enter author ID: ");
-    Scanner scanner = new Scanner(System.in);
-    int authorId = scanner.nextInt();
-    Author author = authorService.getAuthorById(authorId);
-    System.out.println("Author id: " + author.getAuthorId() + "\nAuthor name: " + author.getFirstName() + " " + author.getLastName() + "\nAuthor bio: " + author.getBio() + "\n");
-  }
-
-  public void getBooksByAuthor() throws SQLException{
-    System.out.println("Enter the author ID: ");
-    Scanner scanner = new Scanner(System.in);
-    int authorId = scanner.nextInt();
-    List<Book> books = authorService.getBooksByAuthor(authorId);
-    for (Book book1 : books) {
-      System.out.println("------------------------------\nBook id: " + book1.getBookId() + "\nTitle: "
-              + book1.getTitle() + "\nAuthor: " + book1.getAuthor() + "\nISBN: " + book1.getIsbn() + "\nAvailable copies: "
-              + book1.getAvailableBooks() + "\nCategory id: " + book1.getCategory() + "\nPrice: " + book1.getPrice());
-    }
-  }
-
 }

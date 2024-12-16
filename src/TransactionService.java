@@ -114,4 +114,12 @@ public class TransactionService {
         Book book = bookService.getBookById(bookId);
         bookService.updateAvailableCopies(bookId, book.getAvailableBooks()-1);
     }
+
+    public int getAllSalesBooks(int bookId) throws SQLException {
+        return tranDAO.getAllSalesBooks(bookId);
+    }
+
+    public int getAllRevenue() throws SQLException {
+        return tranDAO.getAllRevenue();
+    }
 }

@@ -28,8 +28,10 @@ public class UserService {
       userDataAO.updatePassword(userId, oldPassword, newPassword);
   }
 
-  public void updateUsername(int userId, String oldUsername, String newUsername) throws SQLException {
-
+  public void updateUsername(int userId,String oldUsername,String password, String newUsername) throws SQLException {
+    if(!authenticateUser(oldUsername,password)) {
+      System.out.println("Incorrect password!");
+    }
     if (getUserById(userId) == null)
       System.out.println("User not found!");
     else if (getUserById(userId).getUsername() != oldUsername)
@@ -40,8 +42,10 @@ public class UserService {
       userDataAO.updateUsername(userId, oldUsername, newUsername);
   }
 
-  public void updateEmail(int userId, String oldEmail, String newEmail) throws SQLException {
-
+  public void updateEmail(int userId, String password,String oldEmail, String newEmail) throws SQLException {
+    if(!authenticateUser(oldEmail,password)) {
+      System.out.println("Incorrect password!");
+    }
     if (getUserById(userId) == null)
       System.out.println("User not found!");
     else if (getUserById(userId).getEmail() != oldEmail)
@@ -54,6 +58,8 @@ public class UserService {
 
   public void deleteUser(int userId) throws SQLException {
 
+    if(getUserById(userId).getUserType().equalsIgnoreCase("Admin"))
+      System.out.println("Admin cannot be deleted!");
     if (getUserById(userId) == null)
       System.out.println("User not found!");
 
@@ -70,6 +76,10 @@ public class UserService {
   }
 
   public User getUserByUsername(String username) throws SQLException {
+    if (getUserByUsername(username) == null)
+      System.out.println("User not found!");
+    if (getUserByUsername(username).getUserType().equalsIgnoreCase("Admin"))
+      System.out.println("Admin cannot be retrieved!");
     return userDataAO.getUserByUsername(username);
   }
 

@@ -25,25 +25,11 @@ public class BookReviewService {
             bookReviewDataAO.deleteBookReview(reviewId);
     }
 
-    public void updateBookReviewUserId(int reviewId, int newUserId) throws SQLException {
-        if(!checkIfBookReviewExists(reviewId))
-            System.out.println("Review doesn't exist");
-        else
-            bookReviewDataAO.updateBookReviewUserId(reviewId, newUserId);
-    }
-
     public void updateBookReviewBookId(int reviewId, int newBookId) throws SQLException {
         if(!checkIfBookReviewExists(reviewId))
             System.out.println("Review doesn't exist");
         else
             bookReviewDataAO.updateBookReviewBookId(reviewId, newBookId);
-    }
-
-    public void updateBookReviewRating(int reviewId, int newRating) throws SQLException {
-        if(!checkIfBookReviewExists(reviewId))
-            System.out.println("Review doesn't exist");
-        else
-            bookReviewDataAO.updateBookReviewRating(reviewId, newRating);
     }
 
     public void updateBookReviewForUser(int reviewId, int userId, int newRating) throws SQLException {
