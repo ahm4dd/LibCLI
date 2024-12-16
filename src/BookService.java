@@ -9,7 +9,7 @@ public class BookService {
       throws SQLException {
     if (availableCopies < 0)
       System.out.println("Copies cannot be below 0.");
-    else if (searchBooksByIsbn(isbn) != null)
+    else if (bookDataAO.searchBooksByIsbn(isbn) != null)
       System.out.println("ISBN already exists");
     // Needs more logic to check if author exists and if the category id is right.
     else

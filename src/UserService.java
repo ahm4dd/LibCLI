@@ -8,9 +8,9 @@ public class UserService {
 
   public void registerUser(String username, String password, String email, String userType) throws SQLException {
 
-    if (getUserByUsername(username) != null)
+    if (userDataAO.getUserByUsername(username) != null)
       System.out.println("Username already exists!");
-    else if (getUserByEmail(email) != null)
+    else if (userDataAO.getUserByEmail(email) != null)
       System.out.println("Email already exists!");
     else
       userDataAO.addUser(username, password, email, userType);
@@ -18,11 +18,11 @@ public class UserService {
 
   public void updatePassword(int userId, String oldPassword, String newPassword) throws SQLException {
 
-    if (getUserById(userId) == null)
+    if (userDataAO.getUserById(userId) == null)
       System.out.println("User not found!");
-    else if (getUserById(userId).getPassword() != oldPassword)
+    else if (userDataAO.getUserById(userId).getPassword() != oldPassword)
       System.out.println("Incorrect old password!");
-    else if (getUserById(userId).getPassword() == newPassword)
+    else if (userDataAO.getUserById(userId).getPassword() == newPassword)
       System.out.println("New password cannot be the same as the old password!");
     else
       userDataAO.updatePassword(userId, oldPassword, newPassword);
@@ -32,11 +32,11 @@ public class UserService {
     if(!authenticateUser(oldUsername,password)) {
       System.out.println("Incorrect password!");
     }
-    if (getUserById(userId) == null)
+    if (userDataAO.getUserById(userId) == null)
       System.out.println("User not found!");
-    else if (getUserById(userId).getUsername() != oldUsername)
+    else if (userDataAO.getUserById(userId).getUsername() != oldUsername)
       System.out.println("Incorrect old username!");
-    else if (getUserByUsername(newUsername) != null)
+    else if (userDataAO.getUserByUsername(newUsername) != null)
       System.out.println("The new username already exists!");
     else
       userDataAO.updateUsername(userId, oldUsername, newUsername);
@@ -46,11 +46,11 @@ public class UserService {
     if(!authenticateUser(oldEmail,password)) {
       System.out.println("Incorrect password!");
     }
-    if (getUserById(userId) == null)
+    if (userDataAO.getUserById(userId) == null)
       System.out.println("User not found!");
-    else if (getUserById(userId).getEmail() != oldEmail)
+    else if (userDataAO.getUserById(userId).getEmail() != oldEmail)
       System.out.println("Incorrect old email!");
-    else if (getUserByEmail(newEmail) != null)
+    else if (userDataAO.getUserByEmail(newEmail) != null)
       System.out.println("The new email already exists!");
     else
       userDataAO.updateEmail(userId, oldEmail, newEmail);
@@ -58,9 +58,9 @@ public class UserService {
 
   public void deleteUser(int userId) throws SQLException {
 
-    if(getUserById(userId).getUserType().equalsIgnoreCase("Admin"))
+    if(userDataAO.getUserById(userId).getUserType().equalsIgnoreCase("Admin"))
       System.out.println("Admin cannot be deleted!");
-    if (getUserById(userId) == null)
+    if (userDataAO.getUserById(userId) == null)
       System.out.println("User not found!");
 
     else
@@ -76,9 +76,9 @@ public class UserService {
   }
 
   public User getUserByUsername(String username) throws SQLException {
-    if (getUserByUsername(username) == null)
+    if (userDataAO.getUserByUsername(username) == null)
       System.out.println("User not found!");
-    if (getUserByUsername(username).getUserType().equalsIgnoreCase("Admin"))
+    if (userDataAO.getUserByUsername(username).getUserType().equalsIgnoreCase("Admin"))
       System.out.println("Admin cannot be retrieved!");
     return userDataAO.getUserByUsername(username);
   }
@@ -88,7 +88,7 @@ public class UserService {
   }
 
   public boolean authenticateUser(String username, String password) throws SQLException {
-    User user = getUserByUsername(username);
+    User user = userDataAO.getUserByUsername(username);
 
     if (user == null) {
       System.out.println("User not found!");
@@ -100,8 +100,9 @@ public class UserService {
       return true;
   }
 
+
   public User loginUser(String username, String password) throws SQLException {
-    User user = getUserByUsername(username);
+    User user = userDataAO.getUserByUsername(username);
     if (authenticateUser(username, password)) {
       return user;
     } else

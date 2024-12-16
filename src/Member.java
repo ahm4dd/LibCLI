@@ -2,6 +2,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static java.lang.System.exit;
+
 public class Member extends User{
     UserService userService = new UserService();
     BookService bookService = new BookService();
@@ -14,72 +17,79 @@ public class Member extends User{
     }
 
     public void accessLibrarySystem() throws SQLException {
-        System.out.println("1.Books 2.Transactions 3.Book Reviews 4.Categories 5.User 6.Authors: ");
-        Scanner scanner = new Scanner(System.in);
-        int option = scanner.nextInt();
-        switch(option){
-            case 1 -> {
-                System.out.println("1.Search book by keyword 2.Search book by ISBN 3.Search book by ID 4.Get all books ");
-                int option2 = scanner.nextInt();
-                switch(option2) {
-                    case 1 -> searchBook();
-                    case 2 -> searchBookByIsbn();
-                    case 3 -> searchBookById();
-                    case 4 -> getAllBooks();
-                }
+        while(true) {
+            System.out.println("1.Books 2.Transactions 3.Book Reviews 4.Categories 5.User 6.Authors 7.logout: ");
+            Scanner scanner = new Scanner(System.in);
+            int option = scanner.nextInt();
+            if (option == 7) {
+                break;
             }
-
-            case 2 -> {
-                System.out.println("1.Add transaction 2.Get all transactions");
-                int option2 = scanner.nextInt();
-                switch(option2) {
-                    case 1 -> addTransaction();
-                    case 2 -> getAllTransactions();
+            switch (option) {
+                case 0 -> exit(0);
+                case 1 -> {
+                    System.out.println("1.Search book by keyword 2.Search book by ISBN 3.Search book by ID 4.Get all books ");
+                    int option2 = scanner.nextInt();
+                    switch (option2) {
+                        case 1 -> searchBook();
+                        case 2 -> searchBookByIsbn();
+                        case 3 -> searchBookById();
+                        case 4 -> getAllBooks();
+                    }
                 }
-            }
 
-            case 3 -> {
-                System.out.println("1.Add book review 2.Get book reviews by book ID 3.Get all book reviews (Yours) 4.Get book review by ID 5.Update review 6.Delete review");
-                int option2 = scanner.nextInt();
-                switch(option2) {
-                    case 1 -> addBookReview();
-                    case 2 -> getReviewForBookId();
-                    case 3 -> getAllBookReviews();
-                    case 4 -> getBookReviewById();
-                    case 5 -> updateReview();
-                    case 6 -> deleteReview();
+                case 2 -> {
+                    System.out.println("1.Add transaction 2.Get all transactions");
+                    int option2 = scanner.nextInt();
+                    switch (option2) {
+                        case 1 -> addTransaction();
+                        case 2 -> getAllTransactions();
+                    }
                 }
-            }
 
-            case 4 -> {
-                System.out.println("1.Get category by Id 2.Search categories 3.Get Books by category 4.Get all categories:");
-                int option2 = scanner.nextInt();
-                switch(option2) {
-                    case 1 -> getCategoryById();
-                    case 2 -> searchCategory();
-                    case 3 -> getBooksByCategory();
-                    case 4 -> getAllCategories();
+                case 3 -> {
+                    System.out.println("1.Add book review 2.Get book reviews by book ID 3.Get all book reviews (Yours) 4.Get book review by ID 5.Update review 6.Delete review");
+                    int option2 = scanner.nextInt();
+                    switch (option2) {
+                        case 1 -> addBookReview();
+                        case 2 -> getReviewForBookId();
+                        case 3 -> getAllBookReviews();
+                        case 4 -> getBookReviewById();
+                        case 5 -> updateReview();
+                        case 6 -> deleteReview();
+                    }
                 }
-            }
 
-            case 5 -> {
-                System.out.println("1.Display your info 2.Update your info 3.Delete your account: ");
-                int option2 = scanner.nextInt();
-                switch(option2) {
-                    case 1 -> displayUserInfo();
-                    case 2 -> updateUserInfo();
-                    case 3 -> deleteAccount();
+                case 4 -> {
+                    System.out.println("1.Get category by Id 2.Search categories 3.Get Books by category 4.Get all categories:");
+                    int option2 = scanner.nextInt();
+                    switch (option2) {
+                        case 1 -> getCategoryById();
+                        case 2 -> searchCategory();
+                        case 3 -> getBooksByCategory();
+                        case 4 -> getAllCategories();
+                    }
                 }
-            }
 
-            case 6 -> {
-                System.out.println("1.Get author by Id 2.Get Books by author 3.Get all authors:");
-                int option2 = scanner.nextInt();
-                switch (option2) {
-                    case 1 -> getAuthorById();
-                    case 2 -> getBooksByAuthor();
-                    case 3 -> getAllAuthors();
+                case 5 -> {
+                    System.out.println("1.Display your info 2.Update your info 3.Delete your account: ");
+                    int option2 = scanner.nextInt();
+                    switch (option2) {
+                        case 1 -> displayUserInfo();
+                        case 2 -> updateUserInfo();
+                        case 3 -> deleteAccount();
+                    }
                 }
+
+                case 6 -> {
+                    System.out.println("1.Get author by Id 2.Get Books by author 3.Get all authors:");
+                    int option2 = scanner.nextInt();
+                    switch (option2) {
+                        case 1 -> getAuthorById();
+                        case 2 -> getBooksByAuthor();
+                        case 3 -> getAllAuthors();
+                    }
+                }
+                default -> System.out.println("Invalid option!");
             }
         }
     }
@@ -247,7 +257,7 @@ public class Member extends User{
             case 1 -> {
                 System.out.println("Enter new username: ");
                 String newUsername = scanner.next();
-                userService.updateUsername(this.getUserId(),this.getUsername(),newUsername);
+                userService.updateUsername(this.getUserId(),this.getUsername(),this.getPassword(),newUsername);
                 System.out.println("Username updated successfully!");
             }
 
@@ -261,7 +271,7 @@ public class Member extends User{
             case 3 -> {
                 System.out.println("Enter new email: ");
                 String newEmail = scanner.next();
-                userService.updateEmail(this.getUserId(),this.getEmail(),newEmail);
+                userService.updateEmail(this.getUserId(),this.getPassword(),this.getEmail(),newEmail);
                 System.out.println("Email updated successfully!");
             }
         }

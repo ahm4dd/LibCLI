@@ -31,17 +31,18 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         DBconnector dBconnector = new DBconnector();
         UserService userService = new UserService();
-        ArrayList<User> users = (ArrayList<User>) userService.getAllUsers();
-
-        System.out.println("Enter 1.Register 2.Login: ");
-        int option = scanner.nextInt();
-
-        switch(option)
-        {
-            case 1 -> register();
-            case 2 -> {
-                User user = login();
-                user.accessLibrarySystem();
+        while(true) {
+            System.out.println("Enter 1.Register 2.Login: ");
+            int option = scanner.nextInt();
+            if(option == 0) {
+                break;
+            }
+            switch (option) {
+                case 1 -> register();
+                case 2 -> {
+                    User user = login();
+                    user.accessLibrarySystem();
+                }
             }
         }
     }
