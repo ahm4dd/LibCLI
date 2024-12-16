@@ -1,6 +1,8 @@
 import java.sql.SQLException;
 import java.util.List;
 
+import static java.lang.System.exit;
+
 public class UserService {
   private UserDataAO userDataAO = new UserDataAO();
 
@@ -94,5 +96,9 @@ public class UserService {
       return user;
     } else
       return null;
+  }
+
+  public void logout(){
+    exit(0);
   }
 }
