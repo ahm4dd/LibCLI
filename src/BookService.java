@@ -4,7 +4,6 @@ import java.util.List;
 
 public class BookService {
   private BookDataAO bookDataAO = new BookDataAO();
-
   public void addBook(String title, int authorId, int categoryId, String isbn, int price ,int availableCopies)
       throws SQLException {
     if (availableCopies < 0)
@@ -97,7 +96,6 @@ public class BookService {
   }
 
   public List<Book> searchBookByCategory(int categoryId) throws SQLException {
-    // Needs more logic to check category I guess, maybe not, who knows
     return bookDataAO.searchBooksByCategory(categoryId);
   }
 

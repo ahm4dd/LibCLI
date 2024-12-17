@@ -146,7 +146,7 @@ public class Member extends User{
     public void getAllTransactions() throws SQLException {
         List<Transaction> transactions = transactionService.getAllTransaction();
         for (Transaction transaction : transactions) {
-            System.out.println("Transaction id: " + transaction.getTransactionId() + "\nBook id: " + transaction.getBookId()
+            System.out.println("Transaction id: " + transaction.getTransactionId() + "\nProductId id: " + transaction.getProduct_id()
                     + "\nUser id: " + transaction.getUserId() + "\nCheckout date: " + transaction.getCheckoutDate()
                     + "\nCost: " + transaction.getCost());
         }

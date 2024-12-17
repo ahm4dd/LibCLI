@@ -44,12 +44,15 @@ public class AuthorDataAO {
             String title = resultSet.getString("books.title");
             int price = resultSet.getInt("books.price");
             String isbn = resultSet.getString("books.isbn");
+            int category_id = resultSet.getInt("books.category_id");
             int availableCopies = resultSet.getInt("books.available_copies");
-            Book book = new Book(bookId,title,authorId,isbn,availableCopies);
+            int product_id = resultSet.getInt("books.product_id");
+            Book book = new Book(bookId,product_id,title,authorId,category_id,isbn,price,availableCopies);
             books.add(book);
         }
         return books;
     }
+
 
     public void deleteAuthor(int authorId) throws SQLException {
         String query = "delete from author where author_id =" + authorId;

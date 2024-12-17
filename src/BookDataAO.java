@@ -5,9 +5,14 @@ import java.util.List;
 
 public class BookDataAO {
 
-  public void addBook(String title, int authorId, int categoryId, String isbn, int price,int availableCopies)
-      throws SQLException {
-    String query = "insert into books (title,author_id,category_id,isbn,available_copies,price) VALUES (?,?,?,?,?,?)";
+  public void addBook(String title, int authorId, int categoryId, String isbn, int price,int availableCopies) throws SQLException {
+    String productCreationQuery = "insert into products (type) VALUES (\"Book\")";
+    Statement creationStmt = DBconnector.conn.createStatement();
+    creationStmt.executeUpdate(productCreationQuery);
+    ResultSet productResultSet = creationStmt.executeQuery("select product_id from products order by product_id desc limit 1");
+    productResultSet.next();
+    int productId = productResultSet.getInt(1);
+    String query = "insert into books (title,author_id,category_id,isbn,available_copies,price,product_id) VALUES (?,?,?,?,?,?,?)";
     PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
     stmt.setString(1, title);
     stmt.setInt(2, authorId);
@@ -15,6 +20,7 @@ public class BookDataAO {
     stmt.setString(4, isbn);
     stmt.setInt(5, availableCopies);
     stmt.setInt(6, price);
+    stmt.setInt(7, productId);
     int resultSet = stmt.executeUpdate();
     if (resultSet != 0)
       System.out.println("Added book successfully!");
@@ -97,7 +103,8 @@ public class BookDataAO {
       String isbn = resultSet.getString("isbn");
       int price = resultSet.getInt("price");
       int availableCopies = resultSet.getInt("available_copies");
-      Book book = new Book(bookId1, title, authorId, categoryId, isbn, price,availableCopies);
+      int product_id = resultSet.getInt("product_id");
+      Book book = new Book(bookId1, product_id,title, authorId, categoryId, isbn, price,availableCopies);
       return book;
     }
     return null;
@@ -116,7 +123,8 @@ public class BookDataAO {
       String isbn = resultSet.getString("isbn");
       int price = resultSet.getInt("price");
       int availableCopies = resultSet.getInt("available_copies");
-      Book book = new Book(book_id, title, authorId, categoryId,isbn ,price ,availableCopies);
+      int product_id = resultSet.getInt("product_id");
+      Book book = new Book(book_id, product_id ,title, authorId, categoryId,isbn ,price ,availableCopies);
       books.add(book);
 
     }
@@ -152,7 +160,8 @@ public class BookDataAO {
       String isbn = resultSet.getString("isbn");
       int price = resultSet.getInt("price");
       int availableCopies = resultSet.getInt("available_copies");
-      Book book = new Book(book_id, title, authorId, categoryId, isbn, price,availableCopies);
+      int product_id = resultSet.getInt("product_id");
+      Book book = new Book(book_id, product_id ,title, authorId, categoryId, isbn, price,availableCopies);
       books.add(book);
     }
     return books;
@@ -167,8 +176,10 @@ public class BookDataAO {
       String title = resultSet.getString("title");
       int authorId = resultSet.getInt("author_id");
       int categoryId = resultSet.getInt("category_id");
+      int price = resultSet.getInt("price");
       int availableCopies = resultSet.getInt("available_copies");
-      Book book = new Book(book_id, title, authorId, categoryId, isbn, availableCopies);
+      int product_id = resultSet.getInt("product_id");
+      Book book = new Book(book_id, product_id ,title, authorId, categoryId, isbn, price,availableCopies);
       return book;
     }
     return null;
@@ -183,9 +194,11 @@ public class BookDataAO {
       int book_id = resultSet.getInt("book_id");
       String title = resultSet.getString("title");
       int authorId = resultSet.getInt("author_id");
+      int price = resultSet.getInt("price");
       String isbn = resultSet.getString("isbn");
       int availableCopies = resultSet.getInt("available_copies");
-      Book book = new Book(book_id, title, authorId, categoryId, isbn, availableCopies);
+      int product_id = resultSet.getInt("product_id");
+      Book book = new Book(book_id, product_id,title, authorId, categoryId, isbn, price,availableCopies);
       books.add(book);
     }
     return books;
@@ -212,5 +225,4 @@ public class BookDataAO {
     if (resultSet != 0)
       System.out.println("Copies updated successfully!");
   }
-
 }
