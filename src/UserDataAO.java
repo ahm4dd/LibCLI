@@ -4,11 +4,12 @@ import java.util.List;
 public class UserDataAO {
 
     public void updatePassword(int userId, String oldPassword, String newPassword) throws SQLException {
-        String query1 = "Select password from users where userId = ?";
+        String query1 = "Select password from users where user_id = ?";
         PreparedStatement stmt = DBconnector.conn.prepareStatement(query1);
+        stmt.setInt(1,userId);
         ResultSet resultSet1 = stmt.executeQuery();
         if(resultSet1.next()){
-                String query2 = "Update users set password = ? where usersId = "+userId;
+                String query2 = "Update users set password = ? where user_id = "+userId;
                 PreparedStatement stmt2 = DBconnector.conn.prepareStatement(query2);
                 stmt2.setString(1,newPassword);
                 int resultSet2 = stmt2.executeUpdate();
@@ -17,12 +18,13 @@ public class UserDataAO {
     }
 
     public void updateUsername(int userId, String oldUsername, String newUsername) throws SQLException {
-            String query1 = "Select username from users where userId = ?";
+            String query1 = "Select username from users where user_id = ?";
             PreparedStatement stmt = DBconnector.conn.prepareStatement(query1);
+            stmt.setInt(1,userId);
             ResultSet resultSet1 = stmt.executeQuery();
             if (resultSet1.next()) {
                 if (oldUsername.equalsIgnoreCase(resultSet1.getString("username"))) {
-                    String query2 = "Update users set username = ? where usersId = " + userId;
+                    String query2 = "Update users set username = ? where user_id = " + userId;
                     PreparedStatement stmt2 = DBconnector.conn.prepareStatement(query2);
                     stmt2.setString(1, newUsername);
                     int resultSet2 = stmt2.executeUpdate();
@@ -33,12 +35,13 @@ public class UserDataAO {
     }
 
     public void updateEmail(int userId, String oldEmail, String newEmail) throws SQLException {
-            String query1 = "Select email from users where userId = ?";
+            String query1 = "Select email from users where user_id = ?";
             PreparedStatement stmt = DBconnector.conn.prepareStatement(query1);
+            stmt.setInt(1,userId);
             ResultSet resultSet1 = stmt.executeQuery();
             if (resultSet1.next()) {
                 if (oldEmail.equalsIgnoreCase(resultSet1.getString("email"))) {
-                    String query2 = "Update users set email = ? where usersId = " + userId;
+                    String query2 = "Update users set email = ? where user_id = " + userId;
                     PreparedStatement stmt2 = DBconnector.conn.prepareStatement(query2);
                     stmt2.setString(1, newEmail);
                     int resultSet2 = stmt2.executeUpdate();

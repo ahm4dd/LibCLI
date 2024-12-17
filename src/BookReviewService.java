@@ -87,7 +87,7 @@ public class BookReviewService {
     }
 
     public boolean checkIfBookReviewExists(int reviewId) throws SQLException {
-        if(getBookReviewById(reviewId) == null)
+        if(bookReviewDataAO.getBookReviewById(reviewId) == null)
             return false;
         else
             return true;

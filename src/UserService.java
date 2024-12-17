@@ -20,9 +20,9 @@ public class UserService {
 
     if (userDataAO.getUserById(userId) == null)
       System.out.println("User not found!");
-    else if (userDataAO.getUserById(userId).getPassword() != oldPassword)
+    else if (!userDataAO.getUserById(userId).getPassword().equalsIgnoreCase(oldPassword))
       System.out.println("Incorrect old password!");
-    else if (userDataAO.getUserById(userId).getPassword() == newPassword)
+    else if (userDataAO.getUserById(userId).getPassword().equalsIgnoreCase(newPassword))
       System.out.println("New password cannot be the same as the old password!");
     else
       userDataAO.updatePassword(userId, oldPassword, newPassword);
@@ -34,7 +34,7 @@ public class UserService {
     }
     if (userDataAO.getUserById(userId) == null)
       System.out.println("User not found!");
-    else if (userDataAO.getUserById(userId).getUsername() != oldUsername)
+    else if (!userDataAO.getUserById(userId).getUsername().equalsIgnoreCase(oldUsername))
       System.out.println("Incorrect old username!");
     else if (userDataAO.getUserByUsername(newUsername) != null)
       System.out.println("The new username already exists!");
@@ -48,7 +48,7 @@ public class UserService {
     }
     if (userDataAO.getUserById(userId) == null)
       System.out.println("User not found!");
-    else if (userDataAO.getUserById(userId).getEmail() != oldEmail)
+    else if (!userDataAO.getUserById(userId).getEmail().equalsIgnoreCase(oldEmail))
       System.out.println("Incorrect old email!");
     else if (userDataAO.getUserByEmail(newEmail) != null)
       System.out.println("The new email already exists!");
@@ -93,11 +93,10 @@ public class UserService {
     if (user == null) {
       System.out.println("User not found!");
       return false;
-    } else if (user.getPassword() == password) {
-      System.out.println("Logged in successfully!");
-      return false;
-    } else
+    } else if (user.getPassword().equalsIgnoreCase(password)) {
       return true;
+    } else
+      return false;
   }
 
 

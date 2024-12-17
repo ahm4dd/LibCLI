@@ -121,21 +121,21 @@ public class Admin extends User {
       String keyword = scanner.next();
       List<Book> books = bookService.searchBooks(keyword);
       for (Book book : books) {
-        System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\n Book Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
+        System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\nBook Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
       }
     }
     if (option == 11) {
       System.out.println("Enter isbn to search: ");
       String isbn = scanner.next();
       Book book = bookService.searchBooksByIsbn(isbn);
-      System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\n Book Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
+      System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\nBook Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
     }
     if (option == 12) {
       System.out.println("Enter category to search: ");
       int categoryId = scanner.nextInt();
       List<Book> books = bookService.searchBookByCategory(categoryId);
       for (Book book : books) {
-        System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\n Book Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
+        System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\nBook Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
       }
     }
     if (option == 13) {
@@ -153,7 +153,7 @@ public class Admin extends User {
     if(option == 15){
       List<Book> books = bookService.getAllBooks();
       for (Book book : books) {
-        System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\n Book Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
+        System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\nBook Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks());
       }
     }
     else

@@ -1,5 +1,5 @@
 import java.sql.SQLException;
-abstract public class User {
+abstract public class User implements Library {
     private int userId;
     private String username;
     private String password;
@@ -53,6 +53,4 @@ abstract public class User {
     public void setUserType(String userType) {
         this.userType = userType;
     }
-
-    abstract void accessLibrarySystem() throws SQLException;
 }
