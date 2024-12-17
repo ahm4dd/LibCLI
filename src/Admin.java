@@ -1,14 +1,13 @@
 import java.sql.*;
 import java.util.Scanner;
 import java.util.List;
-import java.util.ArrayList;
 
 import static java.lang.System.exit;
 
 public class Admin extends User {
   private UserService userService = new UserService();
   private BookService bookService = new BookService();
-  private BookReviewService bookReviewService = new BookReviewService();
+  private ReviewService reviewService = new ReviewService();
   private TransactionService transactionService = new TransactionService();
   private AuthorService authorService = new AuthorService();
   private CategoryService categoryService = new CategoryService();
@@ -21,7 +20,7 @@ public class Admin extends User {
   public void accessLibrarySystem() throws SQLException {
     while (true) {
       System.out.println(
-              "1.Book Menu 2.Transaction Menu 3.Member Menu 4.Author Menu 5.Book Review Menu 6.Category Menu 7.Magazine menu 8.Logout: ");
+              "1.Book Menu 2.Transaction Menu 3.Member Menu 4.Author Menu 5.Review Menu 6.Category Menu 7.Magazine menu 8.Logout: ");
       {
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
@@ -559,44 +558,44 @@ public class Admin extends User {
       System.out.println("1.Add Book Rating 2.Update Book Rating 3.Remove Book Rating 4.Search Book Rating");
       int option = scanner.nextInt();
       if (option == 1) {
-        System.out.println("Enter book id: ");
-        int bookId = scanner.nextInt();
+        System.out.println("Enter product id: ");
+        int productId = scanner.nextInt();
         System.out.println("Enter rating: ");
         int rating = scanner.nextInt();
-        bookReviewService.addBookReview(this.getUserId(), bookId, rating);
+        reviewService.addBookReview(this.getUserId(), productId, rating);
       }
       if (option == 2) {
-        System.out.println("Enter what you want to update 1.Book 2.Rating:");
+        System.out.println("Enter what you want to update 1.Product ID 2.Rating:");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
             System.out.println("Enter Review Id: ");
             int reviewId = scanner.nextInt();
-            System.out.println("Enter new book id: ");
+            System.out.println("Enter new product id: ");
             int newBookId = scanner.nextInt();
-            bookReviewService.updateBookReviewBookId(reviewId, newBookId);
+            reviewService.updateBookReviewProductId(reviewId, newBookId);
           }
           case 2 -> {
             System.out.println("Enter review id: ");
             int reviewId = scanner.nextInt();
             System.out.println("Enter rating: ");
             int newRating = scanner.nextInt();
-            bookReviewService.updateBookReviewForUser(reviewId, this.getUserId(), newRating);
+            reviewService.updateBookReviewForUser(reviewId, this.getUserId(), newRating);
           }
           default -> System.out.println("Invalid option!");
         }
       }
       if (option == 3) {
-        System.out.println("How you want to delete the review of the books 1.ID 2.User 3.Book 4.All By User");
+        System.out.println("How you want to delete the review 1.ID 2.User 3.Product ID 4.All By User");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
-            System.out.println("Enter book id: ");
-            int bookId = scanner.nextInt();
+            System.out.println("Enter product id: ");
+            int productId = scanner.nextInt();
             System.out.println("Are sure? (Y/N)");
             String answer = scanner.next();
             if (answer.equalsIgnoreCase("Y"))
-              bookReviewService.deleteBookReview(bookId);
+              reviewService.deleteBookReview(productId);
           }
           case 2 -> {
             System.out.println("Enter review ID: ");
@@ -606,15 +605,15 @@ public class Admin extends User {
             System.out.println("Are sure? (Y/N)");
             String answer = scanner.next();
             if (answer.equalsIgnoreCase("Y"))
-              bookReviewService.deleteBookReviewForUser(reviewId, userId);
+              reviewService.deleteBookReviewForUser(reviewId, userId);
           }
           case 3 -> {
-            System.out.println("Enter book id: ");
-            int bookId = scanner.nextInt();
+            System.out.println("Enter product id: ");
+            int productId = scanner.nextInt();
             System.out.println("Are sure? (Y/N)");
             String answer = scanner.next();
             if (answer.equalsIgnoreCase("Y"))
-              bookReviewService.deleteAllBookReviewsForBook(bookId);
+              reviewService.deleteAllBookReviewsForProduct(productId);
           }
           case 4 -> {
             System.out.println("enter user id: ");
@@ -622,35 +621,35 @@ public class Admin extends User {
             System.out.println("Are sure? (Y/N)");
             String answer = scanner.next();
             if (answer.equalsIgnoreCase("Y"))
-              bookReviewService.deleteAllBookReviewsForUser(userId);
+              reviewService.deleteAllBookReviewsForUser(userId);
           }
           default -> System.out.println("Invalid option!");
         }
       }
       if (option == 4) {
-        System.out.println("How do want to search for book Review 1.ID 2.Book 3.User");
+        System.out.println("How do want to search for book Review 1.ID 2.Product ID 3.User");
         int op2 = scanner.nextInt();
         switch (op2) {
           case 1 -> {
             System.out.println("Enter book review ID: ");
             int reviewId = scanner.nextInt();
-            BookReview bookReview = bookReviewService.getBookReviewById(reviewId);
-            System.out.println("Review id: " + bookReview.getReview_id() + "\nReview book id: " + bookReview.getBook_id() + "\nReview user id: " + bookReview.getUser_id() + "\nRating: " + bookReview.getRating());
+            Review review = reviewService.getBookReviewById(reviewId);
+            System.out.println("Review id: " + review.getReview_id() + "\nReview product id: " + review.getProduct_id() + "\nReview user id: " + review.getUser_id() + "\nRating: " + review.getRating());
           }
           case 2 -> {
-            System.out.println("Enter book id: ");
-            int bookId = scanner.nextInt();
-            List<BookReview> bookReviews = bookReviewService.getAllBookReviewsForBook(bookId);
-            for (BookReview bookReview : bookReviews) {
-              System.out.println("Review id: " + bookReview.getReview_id() + "\nReview book id: " + bookReview.getBook_id() + "\nReview user id: " + bookReview.getUser_id() + "\nRating: " + bookReview.getRating());
+            System.out.println("Enter product id: ");
+            int productId = scanner.nextInt();
+            List<Review> reviews = reviewService.getAllBookReviewsForProduct(productId);
+            for (Review review : reviews) {
+              System.out.println("Review id: " + review.getReview_id() + "\nReview product id: " + review.getProduct_id() + "\nReview user id: " + review.getUser_id() + "\nRating: " + review.getRating());
             }
           }
           case 3 -> {
             System.out.println("Enter user id: ");
             int userId = scanner.nextInt();
-            List<BookReview> bookReviews = bookReviewService.getAllBookReviewsForUser(userId);
-            for (BookReview bookReview : bookReviews) {
-              System.out.println("Review id: " + bookReview.getReview_id() + "\nReview book id: " + bookReview.getBook_id() + "\nReview user id: " + bookReview.getUser_id() + "\nRating: " + bookReview.getRating());
+            List<Review> reviews = reviewService.getAllBookReviewsForUser(userId);
+            for (Review review : reviews) {
+              System.out.println("Review id: " + review.getReview_id() + "\nReview product id: " + review.getProduct_id() + "\nReview user id: " + review.getUser_id() + "\nRating: " + review.getRating());
             }
           }
           default -> System.out.println("Invalid option!");

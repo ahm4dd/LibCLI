@@ -1,14 +1,14 @@
-public class BookReview {
+public class Review {
     private int review_id;
     private int user_id;
-    private int book_id;
+    private int product_id;
     private int rating;
 
 
-    BookReview(int review_id, int user_id, int book_id, int rating){
+    Review(int review_id, int user_id, int product_id, int rating){
         this.review_id = review_id;
         this.user_id = user_id;
-        this.book_id = book_id;
+        this.product_id = product_id;
         this.rating = rating;
     }
 
@@ -28,12 +28,12 @@ public class BookReview {
         this.user_id = user_id;
     }
 
-    public int getBook_id() {
-        return book_id;
+    public int getProduct_id() {
+        return product_id;
     }
 
-    public void setBook_id(int book_id) {
-        this.book_id = book_id;
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
     }
 
     public int getRating() {

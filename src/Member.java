@@ -9,7 +9,7 @@ public class Member extends User{
     UserService userService = new UserService();
     BookService bookService = new BookService();
     TransactionService transactionService = new TransactionService();
-    BookReviewService bookReviewService = new BookReviewService();
+    ReviewService reviewService = new ReviewService();
     AuthorService authorService = new AuthorService();
     CategoryService categoryService = new CategoryService();
     Member(int userId, String username, String password, String email, String userType) {
@@ -158,7 +158,7 @@ public class Member extends User{
         int bookId = scanner.nextInt();
         System.out.println("Enter rating: ");
         int rating = scanner.nextInt();
-        bookReviewService.addBookReview(this.getUserId(),bookId,rating);
+        reviewService.addBookReview(this.getUserId(),bookId,rating);
         System.out.println("Review added successfully!");
     }
 
@@ -166,10 +166,10 @@ public class Member extends User{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter book id: ");
         int bookId = scanner.nextInt();
-        List<BookReview> bookReviews = new ArrayList<BookReview>();
-        bookReviews = bookReviewService.getAllBookReviewsForBook(bookId);
-        for (BookReview bookReview : bookReviews){
-            System.out.println("Review id: "+ bookReview.getReview_id() +"\nUsed id: " + bookReview.getUser_id() + "\nBook id: " + bookReview.getBook_id() + "\nRating: "+ bookReview.getRating());
+        List<Review> reviews = new ArrayList<Review>();
+        reviews = reviewService.getAllBookReviewsForProduct(bookId);
+        for (Review review : reviews){
+            System.out.println("Review id: "+ review.getReview_id() +"\nUsed id: " + review.getUser_id() + "\nBook id: " + review.getProduct_id() + "\nRating: "+ review.getRating());
         }
     }
 
@@ -177,8 +177,8 @@ public class Member extends User{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter review id: ");
         int reviewId = scanner.nextInt();
-        BookReview bookReview = bookReviewService.getBookReviewById(reviewId);
-        System.out.println("Review id: "+ bookReview.getReview_id() +"\nUsed id: " + bookReview.getUser_id() + "\nBook id: " + bookReview.getBook_id() + "\nRating: "+ bookReview.getRating());
+        Review review = reviewService.getBookReviewById(reviewId);
+        System.out.println("Review id: "+ review.getReview_id() +"\nUsed id: " + review.getUser_id() + "\nBook id: " + review.getProduct_id() + "\nRating: "+ review.getRating());
     }
 
     public void updateReview() throws SQLException {
@@ -187,7 +187,7 @@ public class Member extends User{
         int reviewId = scanner.nextInt();
         System.out.println("Enter rating: ");
         int newRating = scanner.nextInt();
-        bookReviewService.updateBookReviewForUser(reviewId,this.getUserId(),newRating);
+        reviewService.updateBookReviewForUser(reviewId,this.getUserId(),newRating);
         System.out.println("Review updated successfully!");
     }
 
@@ -195,14 +195,14 @@ public class Member extends User{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter review id: ");
         int reviewId = scanner.nextInt();
-        bookReviewService.deleteBookReviewForUser(reviewId,this.getUserId());
+        reviewService.deleteBookReviewForUser(reviewId,this.getUserId());
         System.out.println("Review deleted successfully!");
     }
     public void getAllBookReviews() throws SQLException {
-        List<BookReview> bookReviews = new ArrayList<BookReview>();
-        bookReviews = bookReviewService.getAllBookReviewsForUser(this.getUserId());
-        for (BookReview bookReview : bookReviews){
-            System.out.println("Review id: "+ bookReview.getReview_id() +"\nUsed id: " + bookReview.getUser_id() + "\nBook id: " + bookReview.getBook_id() + "\nRating: "+ bookReview.getRating());
+        List<Review> reviews = new ArrayList<Review>();
+        reviews = reviewService.getAllBookReviewsForUser(this.getUserId());
+        for (Review review : reviews){
+            System.out.println("Review id: "+ review.getReview_id() +"\nUsed id: " + review.getUser_id() + "\nBook id: " + review.getProduct_id() + "\nRating: "+ review.getRating());
         }
     }
 

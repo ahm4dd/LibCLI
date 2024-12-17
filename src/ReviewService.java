@@ -1,93 +1,98 @@
 import java.sql.SQLException;
 import java.util.List;
 
-public class BookReviewService {
-    private BookReviewDataAO bookReviewDataAO = new BookReviewDataAO();
+public class ReviewService {
+    private ReviewDataAO reviewDataAO = new ReviewDataAO();
     private BookService bookService = new BookService();
     private UserService userService = new UserService();
+    private MagazineService magazineService = new MagazineService();
     public void addBookReview(int user_id,int bookId,int rating) throws SQLException {
-        bookReviewDataAO.addBookReview(user_id,bookId,rating);
+        reviewDataAO.addBookReview(user_id,bookId,rating);
     }
 
     public void deleteBookReview(int reviewId) throws SQLException, SQLException {
-        if(!checkIfBookReviewExists(reviewId))
+        if(!checkIfReviewExists(reviewId))
             System.out.println("Review doesn't exist");
         else
-            bookReviewDataAO.deleteBookReview(reviewId);
+            reviewDataAO.deleteBookReview(reviewId);
     }
 
     public void deleteBookReviewForUser(int reviewId, int userId) throws SQLException {
-        if(!checkIfBookReviewExists(reviewId))
+        if(!checkIfReviewExists(reviewId))
             System.out.println("Review doesn't exist");
         if(!checkIfBookReviewBelongsToUser(reviewId, userId))
             System.out.println("Review doesn't belong to user");
         else
-            bookReviewDataAO.deleteBookReview(reviewId);
+            reviewDataAO.deleteBookReview(reviewId);
     }
 
-    public void updateBookReviewBookId(int reviewId, int newBookId) throws SQLException {
-        if(!checkIfBookReviewExists(reviewId))
+    public void updateBookReviewProductId(int reviewId, int productId) throws SQLException {
+        if(!checkIfReviewExists(reviewId))
             System.out.println("Review doesn't exist");
         else
-            bookReviewDataAO.updateBookReviewBookId(reviewId, newBookId);
+            reviewDataAO.updateBookReviewProductId(reviewId, productId);
     }
 
     public void updateBookReviewForUser(int reviewId, int userId, int newRating) throws SQLException {
-        if(!checkIfBookReviewExists(reviewId))
+        if(!checkIfReviewExists(reviewId))
             System.out.println("Review doesn't exist");
         if(!checkIfBookReviewBelongsToUser(reviewId, userId))
             System.out.println("Review doesn't belong to user");
         else
-            bookReviewDataAO.updateBookReviewRating(reviewId, newRating);
+            reviewDataAO.updateBookReviewRating(reviewId, newRating);
     }
 
     private boolean checkIfBookReviewBelongsToUser(int reviewId, int userId) throws SQLException {
-        return bookReviewDataAO.getBookReviewById(reviewId).getUser_id() == userId;
+        return reviewDataAO.getBookReviewById(reviewId).getUser_id() == userId;
     }
 
-    public BookReview getBookReviewById(int reviewId) throws SQLException {
-        if(!checkIfBookReviewExists(reviewId)) {
+    public Review getBookReviewById(int reviewId) throws SQLException {
+        if(!checkIfReviewExists(reviewId)) {
             System.out.println("Review doesn't exist");
             return null;
         }
         else
-            return bookReviewDataAO.getBookReviewById(reviewId);
+            return reviewDataAO.getBookReviewById(reviewId);
     }
 
-    public List<BookReview> getAllBookReviewsForBook(int bookId) throws SQLException {
-        if(!bookService.checkIfBookIsAvailable(bookId)) {
+    public List<Review> getAllBookReviewsForProduct(int productId) throws SQLException {
+        if(!bookService.checkIfBookIsAvailable(productId)) {
             System.out.println("Book doesn't exist");
             return null;
         }
+        if(!magazineService.checkIfMagazineExists(productId)) {
+            System.out.println("Magazine doesn't exist");
+            return null;
+        }
         else
-            return bookReviewDataAO.getAllBookReviewsForBook(bookId);
+            return reviewDataAO.getAllBookReviewsForProduct(productId);
     }
 
-    public List<BookReview> getAllBookReviewsForUser(int userId) throws SQLException {
+    public List<Review> getAllBookReviewsForUser(int userId) throws SQLException {
         if(userService.getUserById(userId) == null) {
             System.out.println("Book doesn't exist");
             return null;
         }
         else
-            return bookReviewDataAO.getAllBookReviewsForUser(userId);
+            return reviewDataAO.getAllBookReviewsForUser(userId);
     }
 
-    public void deleteAllBookReviewsForBook(int bookId) throws SQLException {
-        if(!bookService.checkIfBookIsAvailable(bookId))
+    public void deleteAllBookReviewsForProduct(int productId) throws SQLException {
+        if(!bookService.checkIfBookIsAvailable(productId))
             System.out.println("Book doesn't exist");
         else
-            bookReviewDataAO.deleteAllBookReviewsForBook(bookId);
+            reviewDataAO.deleteAllBookReviewsForProduct(productId);
     }
 
     public void deleteAllBookReviewsForUser(int userId) throws SQLException {
         if(userService.getUserById(userId) == null)
             System.out.println("Book doesn't exist");
         else
-            bookReviewDataAO.deleteAllBookReviewsForUser(userId);
+            reviewDataAO.deleteAllBookReviewsForUser(userId);
     }
 
-    public boolean checkIfBookReviewExists(int reviewId) throws SQLException {
-        if(bookReviewDataAO.getBookReviewById(reviewId) == null)
+    public boolean checkIfReviewExists(int reviewId) throws SQLException {
+        if(reviewDataAO.getBookReviewById(reviewId) == null)
             return false;
         else
             return true;

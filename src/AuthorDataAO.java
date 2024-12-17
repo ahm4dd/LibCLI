@@ -53,6 +53,24 @@ public class AuthorDataAO {
         return books;
     }
 
+    public List<Magazine> getMagazinesByAuthor(int authorId) throws SQLException {
+        List<Magazine> magazines = new ArrayList<Magazine>();
+        String query = "Select * from magazines inner join author ON author.author_id = "+ authorId + "AND magazines.author_id = author.author_id";
+        Statement stmt = DBconnector.conn.createStatement();
+        ResultSet resultSet = stmt.executeQuery(query);
+        while(resultSet.next()){
+            int magazineId = resultSet.getInt("magazines.magazine_id");
+            String title = resultSet.getString("magazines.title");
+            int price = resultSet.getInt("magazines.price");
+            int category_id = resultSet.getInt("magazines.category_id");
+            int availableCopies = resultSet.getInt("magazines.available_copies");
+            int product_id = resultSet.getInt("magazines.product_id");
+            Magazine magazine = new Magazine(magazineId,product_id,title,authorId,category_id,price,availableCopies);
+            magazines.add(magazine);
+        }
+        return magazines;
+    }
+
 
     public void deleteAuthor(int authorId) throws SQLException {
         String query = "delete from author where author_id =" + authorId;
