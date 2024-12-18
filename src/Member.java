@@ -40,7 +40,7 @@ public class Member extends User{
                 }
 
                 case 2 -> {
-                    System.out.println("1.Add transaction 2.Get all transactions");
+                    System.out.println("1.Add transaction 2.Get all transactions: ");
                     int option2 = scanner.nextInt();
                     switch (option2) {
                         case 1 -> addTransaction();
@@ -49,7 +49,7 @@ public class Member extends User{
                 }
 
                 case 3 -> {
-                    System.out.println("1.Add book review 2.Get book reviews by book ID 3.Get all book reviews (Yours) 4.Get book review by ID 5.Update review 6.Delete review");
+                    System.out.println("1.Add book review 2.Get book reviews by book ID 3.Get all book reviews (Yours) 4.Get book review by ID 5.Update review 6.Delete review: ");
                     int option2 = scanner.nextInt();
                     switch (option2) {
                         case 1 -> addBookReview();
@@ -62,7 +62,7 @@ public class Member extends User{
                 }
 
                 case 4 -> {
-                    System.out.println("1.Get category by Id 2.Search categories 3.Get all categories:");
+                    System.out.println("1.Get category by Id 2.Search categories 3.Get all categories: ");
                     int option2 = scanner.nextInt();
                     switch (option2) {
                         case 1 -> getCategoryById();
@@ -82,7 +82,7 @@ public class Member extends User{
                 }
 
                 case 6 -> {
-                    System.out.println("1.Get author by Id 2.Get Books by author 3.Get Magazines by author 4.Get all authors:");
+                    System.out.println("1.Get author by Id 2.Get Books by author 3.Get Magazines by author 4.Get all authors: ");
                     int option2 = scanner.nextInt();
                     switch (option2) {
                         case 1 -> getAuthorById();

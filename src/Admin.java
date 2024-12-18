@@ -61,7 +61,7 @@ public class Admin extends User {
       magazineService.addMagazine(title, authorId, categoryId, price, availableCopies);
     }
     if (option == 2) {
-      System.out.println("Enter what you want to update 1.Title 2.Author 3.Category 4.Price 5.Available Copies");
+      System.out.println("Enter what you want to update 1.Title 2.Author 3.Category 4.Price 5.Available Copies: ");
       int option2 = scanner.nextInt();
       switch (option2) {
         case 1 -> {
@@ -103,7 +103,7 @@ public class Admin extends User {
       }
     }
     if (option == 3) {
-      System.out.println("Enter how you want to remove 1.Magazine id 2.All magazines");
+      System.out.println("Enter how you want to remove 1.Magazine id 2.All magazines: ");
       int option2 = scanner.nextInt();
       switch (option2) {
         case 1 -> {
@@ -295,7 +295,7 @@ public class Admin extends User {
     public void transactionMenu () throws SQLException {
       Scanner scanner = new Scanner(System.in);
       System.out.println("1.Add Transaction 2.Update Transaction Cost 3.Update Transaction Book Id 4.Update Transaction User Id 5.Get Transaction By Id 6.Get Transaction By User Id" +
-              "7.Get Transaction By Book Id 8.Get All Transactions 9.Get All Profit By Book 10.Get All Revenue 11.Delete Transaction By User Id 12.Delete Transaction By Book Id 13.Delete Transaction By Id");
+              "7.Get Transaction By Book Id 8.Get All Transactions 9.Get All Profit By Book 10.Get All Revenue 11.Delete Transaction By User Id 12.Delete Transaction By Book Id 13.Delete Transaction By Id: ");
       int option = scanner.nextInt();
       if (option == 1) {
         System.out.println("enter productId: ");
@@ -399,7 +399,7 @@ public class Admin extends User {
 
     public void memberMenu () throws SQLException {
       Scanner scanner = new Scanner(System.in);
-      System.out.println("1.Add Member 2.Update Member 3.Remove Member 4.Search Member");
+      System.out.println("1.Add Member 2.Update Member 3.Remove Member 4.Search Member: ");
       int option = scanner.nextInt();
       if (option == 1) {
         System.out.println("Enter username: ");
@@ -459,7 +459,7 @@ public class Admin extends User {
           return;
       }
       if (option == 4) {
-        System.out.println("Enter how do you want to find user 1.Username 2.Email 3.All users 4.ID");
+        System.out.println("Enter how do you want to find user 1.Username 2.Email 3.All users 4.ID: ");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
@@ -497,7 +497,7 @@ public class Admin extends User {
 
     public void authorMenu () throws SQLException {
       Scanner scanner = new Scanner(System.in);
-      System.out.println("1.Add Author 2.Update Author 3.Remove Author 4.Search Author");
+      System.out.println("1.Add Author 2.Update Author 3.Remove Author 4.Search Author: ");
       int option = scanner.nextInt();
       if (option == 1) {
         System.out.println("Enter first name: ");
@@ -549,7 +549,7 @@ public class Admin extends User {
           return;
       }
       if (option == 4) {
-        System.out.println("Enter how do you want to find author 1.ID 2.All Authors");
+        System.out.println("Enter how do you want to find author 1.ID 2.All Authors: ");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
@@ -572,7 +572,7 @@ public class Admin extends User {
 
     public void bookReviewMenu () throws SQLException {
       Scanner scanner = new Scanner(System.in);
-      System.out.println("1.Add Book Rating 2.Update Book Rating 3.Remove Book Rating 4.Search Book Rating");
+      System.out.println("1.Add Book Rating 2.Update Book Rating 3.Remove Book Rating 4.Search Book Rating: ");
       int option = scanner.nextInt();
       if (option == 1) {
         System.out.println("Enter product id: ");
@@ -582,7 +582,7 @@ public class Admin extends User {
         reviewService.addBookReview(this.getUserId(), productId, rating);
       }
       if (option == 2) {
-        System.out.println("Enter what you want to update 1.Product ID 2.Rating:");
+        System.out.println("Enter what you want to update 1.Product ID 2.Rating: ");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
@@ -603,7 +603,7 @@ public class Admin extends User {
         }
       }
       if (option == 3) {
-        System.out.println("How you want to delete the review 1.ID 2.User 3.Product ID 4.All By User");
+        System.out.println("How you want to delete the review 1.ID 2.User 3.Product ID 4.All By User: ");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
@@ -644,7 +644,7 @@ public class Admin extends User {
         }
       }
       if (option == 4) {
-        System.out.println("How do want to search for book Review 1.ID 2.Product ID 3.User");
+        System.out.println("How do want to search for book Review 1.ID 2.Product ID 3.User: ");
         int op2 = scanner.nextInt();
         switch (op2) {
           case 1 -> {
@@ -675,7 +675,7 @@ public class Admin extends User {
     }
 
     public void categoryMenu () throws SQLException {
-      System.out.println("1.Add Category 2.Update Category 3.Remove Category 4.Search Category");
+      System.out.println("1.Add Category 2.Update Category 3.Remove Category 4.Search Category: ");
       Scanner scanner = new Scanner(System.in);
       int option = scanner.nextInt();
       if (option == 1) {
@@ -687,7 +687,7 @@ public class Admin extends User {
         categoryService.addCategory(name, description);
       }
       if (option == 2) {
-        System.out.println("Enter which you want to update the category 1.Name 2.Description");
+        System.out.println("Enter which you want to update the category 1.Name 2.Description: ");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
@@ -717,7 +717,7 @@ public class Admin extends User {
           categoryService.deleteCategory(categoryId);
       }
       if (option == 4) {
-        System.out.println("Enter hwo you want to search for category: 1.ID 2.Keyword 3.All categories");
+        System.out.println("Enter hwo you want to search for category: 1.ID 2.Keyword 3.All categories: ");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
