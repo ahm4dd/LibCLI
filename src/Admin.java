@@ -117,7 +117,7 @@ public class Admin extends User {
       }
     }
     if (option == 4) {
-      System.out.println("Enter how you want to search 1.ID 2.Keyword 3.Category 4.All magazines");
+      System.out.println("Enter how you want to search 1.ID 2.Keyword 3.Category 4.All magazines 5.Get Magazines By Author: ");
       int option2 = scanner.nextInt();
       switch (option2) {
         case 1 -> {
@@ -149,6 +149,14 @@ public class Admin extends User {
             System.out.println("Magazine id: " + magazine.getMagazineId() + "\nMagazine title: " + magazine.getTitle() + "\nMagazine author id: " + magazine.getAuthor() + "\nMagazine category id: " + magazine.getCategory() + "\nMagazine price: " + magazine.getPrice() + "\nMagazine available copies: " + magazine.getAvailableCopies() + "\nMagazine product id: " + magazine.getProductId());
           }
         }
+        case 5 -> {
+          System.out.println("Enter author id: ");
+          int authorId = scanner.nextInt();
+          List<Magazine> magazines = authorService.getMagazinesByAuthor(authorId);
+          for (Magazine magazine : magazines) {
+            System.out.println("Magazine id: " + magazine.getMagazineId() + "\nMagazine title: " + magazine.getTitle() + "\nMagazine author id: " + magazine.getAuthor() + "\nMagazine category id: " + magazine.getCategory() + "\nMagazine price: " + magazine.getPrice() + "\nMagazine available copies: " + magazine.getAvailableCopies() + "\nMagazine product id: " + magazine.getProductId());
+          }
+        }
       }
     }
 }
@@ -156,7 +164,7 @@ public class Admin extends User {
 
     public void bookMenu () throws SQLException {
       System.out.println("choose one\n 1.Add Book 2.Update Book Title 3.Update Book Author 4.Update Book ISBN 5.Book Available Copies 6.Update Book Category 7.Update Book Price" +
-              " 8.Delete Book 9.Delete All Books 10.Search Books By Keyword 11.Search Books By ISBN 12.Search Books By Category 13.Check If Book Is Available 14.Update Available Copies 15.Get All Books");
+              " 8.Delete Book 9.Delete All Books 10.Search Books By Keyword 11.Search Books By ISBN 12.Search Books By Category 13.Check If Book Is Available 14.Update Available Copies 15.Get All Books 16.Get Books By Author: ");
       Scanner scanner = new Scanner(System.in);
       int option = scanner.nextInt();
       if (option == 1) {
@@ -271,7 +279,16 @@ public class Admin extends User {
         for (Book book : books) {
           System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\nBook Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks() + "\nProduct id: " + book.getProductId());
         }
-      } else
+      }
+      if (option == 16){
+        System.out.println("Enter author id: ");
+        int authorId = scanner.nextInt();
+        List<Book> books = authorService.getBooksByAuthor(authorId);
+        for(Book book : books) {
+          System.out.println("Book id: " + book.getBookId() + "\nBook Title: " + book.getTitle() + "\nBook Author: " + book.getAuthor() + "\nBook ISBN: " + book.getIsbn() + "\nBook category:" + book.getCategory() + "\nBook price: " + book.getPrice() + "\nBook available copies: " + book.getAvailableBooks() + "\nProduct id: " + book.getProductId());
+        }
+      }
+      else
         System.out.println("Invalid option!");
     }
 

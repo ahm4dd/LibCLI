@@ -27,6 +27,15 @@ public class AuthorService {
             return authorDataAO.getBooksByAuthor(authorId);
     }
 
+    public List<Magazine> getMagazinesByAuthor(int authorId) throws SQLException {
+        if(!checkIfAuthorExists(authorId)){
+            System.out.println("Author doesn't exist");
+            return null;
+        }
+        else
+            return authorDataAO.getMagazinesByAuthor(authorId);
+    }
+
     public void deleteAuthor(int authorId) throws SQLException{
         if(!checkIfAuthorExists(authorId))
             System.out.println("Author doesn't exist");

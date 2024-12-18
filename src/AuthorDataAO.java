@@ -26,7 +26,6 @@ public class AuthorDataAO {
             String firstName = resultSet.getString("first_name");
             String lastName = resultSet.getString("last_name");
             String bio = resultSet.getString("bio");
-
             Author author = new Author(authorId, firstName, lastName, bio);
             return author;
         }
@@ -115,6 +114,4 @@ public class AuthorDataAO {
         }
         return authors;
     }
-
-
 }

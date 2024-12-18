@@ -25,7 +25,7 @@ public class UserService {
     else if (userDataAO.getUserById(userId).getPassword().equalsIgnoreCase(newPassword))
       System.out.println("New password cannot be the same as the old password!");
     else
-      userDataAO.updatePassword(userId, oldPassword, newPassword);
+      userDataAO.updatePassword(userId, newPassword);
   }
 
   public void updateUsername(int userId,String oldUsername,String password, String newUsername) throws SQLException {
@@ -39,7 +39,7 @@ public class UserService {
     else if (userDataAO.getUserByUsername(newUsername) != null)
       System.out.println("The new username already exists!");
     else
-      userDataAO.updateUsername(userId, oldUsername, newUsername);
+      userDataAO.updateUsername(userId, newUsername);
   }
 
   public void updateEmail(int userId, String password,String oldEmail, String newEmail) throws SQLException {
@@ -53,25 +53,31 @@ public class UserService {
     else if (userDataAO.getUserByEmail(newEmail) != null)
       System.out.println("The new email already exists!");
     else
-      userDataAO.updateEmail(userId, oldEmail, newEmail);
+      userDataAO.updateEmail(userId, newEmail);
   }
 
   public void deleteUser(int userId) throws SQLException {
-
     if(userDataAO.getUserById(userId).getUserType().equalsIgnoreCase("Admin"))
       System.out.println("Admin cannot be deleted!");
     if (userDataAO.getUserById(userId) == null)
       System.out.println("User not found!");
-
     else
       userDataAO.deleteUser(userId);
   }
 
   public User getUserById(int userId) throws SQLException {
+    if (userDataAO.getUserById(userId) == null)
+      System.out.println("User not found!");
+    if (userDataAO.getUserById(userId).getUserType().equalsIgnoreCase("Admin"))
+      System.out.println("Admin cannot be retrieved!");
     return userDataAO.getUserById(userId);
   }
 
   public User getUserByEmail(String email) throws SQLException {
+    if (userDataAO.getUserByEmail(email) == null)
+      System.out.println("User not found!");
+    if (userDataAO.getUserByEmail(email).getUserType().equalsIgnoreCase("Admin"))
+      System.out.println("Admin cannot be retrieved!");
     return userDataAO.getUserByEmail(email);
   }
 
@@ -98,7 +104,6 @@ public class UserService {
     } else
       return false;
   }
-
 
   public User loginUser(String username, String password) throws SQLException {
     User user = userDataAO.getUserByUsername(username);
