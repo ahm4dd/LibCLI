@@ -82,17 +82,18 @@ public class Member extends User{
                 }
 
                 case 6 -> {
-                    System.out.println("1.Get author by Id 2.Get Books by author 3.Get all authors:");
+                    System.out.println("1.Get author by Id 2.Get Books by author 3.Get Magazines by author 4.Get all authors:");
                     int option2 = scanner.nextInt();
                     switch (option2) {
                         case 1 -> getAuthorById();
                         case 2 -> getBooksByAuthor();
-                        case 3 -> getAllAuthors();
+                        case 3 -> getAllMagazinesByAuthor();
+                        case 4 -> getAllAuthors();
                     }
                 }
 
                 case 7 -> {
-                    System.out.println("1.Search magazines by keyword 2.Search magazines by ISBN 3.Search magazines by ID 4.Get all magazines ");
+                    System.out.println("1.Search magazines by keyword 2.Search magazines by ISBN 3.Search magazines by ID 4.Update review: ");
                     int option2 = scanner.nextInt();
                     switch (option2) {
                         case 1 -> searchMagazine();
@@ -103,6 +104,18 @@ public class Member extends User{
                 }
                 default -> System.out.println("Invalid option!");
             }
+        }
+    }
+
+    private void getAllMagazinesByAuthor() throws SQLException {
+        System.out.println("Enter author id: ");
+        Scanner scanner = new Scanner(System.in);
+        int authorId = scanner.nextInt();
+        List<Magazine> magazines = authorService.getMagazinesByAuthor(authorId);
+        for (Magazine magazine : magazines) {
+            System.out.println("------------------------------\nMagazine id: " + magazine.getMagazineId() + "\nTitle: "
+                    + magazine.getTitle() + "\nAuthor: " + magazine.getAuthor() + "\nAvailable copies: "
+                    + magazine.getAvailableCopies() + "\nCategory id: " + magazine.getCategory() + "\nPrice: " + magazine.getPrice()+"\nProduct id: "+magazine.getProductId());
         }
     }
 
