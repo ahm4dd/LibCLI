@@ -32,44 +32,28 @@ public class AuthorDataAO {
         return null;
     }
 
-
-    public List<Book> getBooksByAuthor(int authorId) throws SQLException {
-        List<Book> books = new ArrayList<Book>();
-        String query = "Select * from books inner join author ON author.author_id = "+ authorId + "AND books.author_id = author.author_id";
-        Statement stmt = DBconnector.conn.createStatement();
-        ResultSet resultSet = stmt.executeQuery(query);
-        while(resultSet.next()){
-            int bookId = resultSet.getInt("books.book_id");
-            String title = resultSet.getString("books.title");
-            int price = resultSet.getInt("books.price");
-            String isbn = resultSet.getString("books.isbn");
-            int category_id = resultSet.getInt("books.category_id");
-            int availableCopies = resultSet.getInt("books.available_copies");
-            int product_id = resultSet.getInt("books.product_id");
-            Book book = new Book(bookId,product_id,title,authorId,category_id,isbn,price,availableCopies);
-            books.add(book);
+    // Retrieve authors by name (either first or last name)
+    public List<Author> getAuthorsByName(String name) throws SQLException {
+        List<Author> authors = new ArrayList<>();
+        String query = "SELECT * FROM author WHERE first_name LIKE ? OR last_name LIKE ?";
+        try (PreparedStatement stmt = DBconnector.conn.prepareStatement(query)) {
+            stmt.setString(1, "%" + name + "%");
+            stmt.setString(2, "%" + name + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                authors.add(new Author(
+                        rs.getInt("author_id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("bio")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving authors by name: " + e.getMessage());
+            throw e;
         }
-        return books;
+        return authors;
     }
-
-    public List<Magazine> getMagazinesByAuthor(int authorId) throws SQLException {
-        List<Magazine> magazines = new ArrayList<Magazine>();
-        String query = "Select * from magazines inner join author ON author.author_id = "+ authorId + "AND magazines.author_id = author.author_id";
-        Statement stmt = DBconnector.conn.createStatement();
-        ResultSet resultSet = stmt.executeQuery(query);
-        while(resultSet.next()){
-            int magazineId = resultSet.getInt("magazines.magazine_id");
-            String title = resultSet.getString("magazines.title");
-            int price = resultSet.getInt("magazines.price");
-            int category_id = resultSet.getInt("magazines.category_id");
-            int availableCopies = resultSet.getInt("magazines.available_copies");
-            int product_id = resultSet.getInt("magazines.product_id");
-            Magazine magazine = new Magazine(magazineId,product_id,title,authorId,category_id,price,availableCopies);
-            magazines.add(magazine);
-        }
-        return magazines;
-    }
-
 
     public void deleteAuthor(int authorId) throws SQLException {
         String query = "delete from author where author_id =" + authorId;

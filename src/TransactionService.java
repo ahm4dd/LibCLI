@@ -4,22 +4,15 @@ import java.util.List;
 public class TransactionService {
     private TransactionDataAO tranDAO=new TransactionDataAO();
     private UserService userService =new UserService();
-    private BookService bookService=new BookService();
+    private ProductService productService = new ProductService();
+
     public void addTransaction(int userId,int product_id)throws SQLException{
-        String query = "Select type from products where product_id = ?";
-        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
-        stmt.setInt(1, product_id);
-        ResultSet rs = stmt.executeQuery();
-        String type = "";
-        while (rs.next()) {
-            type = rs.getString("type");
-        }
         if(userService.getUserById(userId)==null)
             System.out.println("this User ID does not exist! ");
         if(!isProductAvailable(product_id))
             System.out.println("this product ID does not exist! ");
-        else if(type.equalsIgnoreCase("Book")) {
-            String query1 = "Select price from books where product_id = ?";
+        else {
+            String query1 = "Select price from products where product_id = ?";
             PreparedStatement stmt1 = DBconnector.conn.prepareStatement(query1);
             stmt1.setInt(1, product_id);
             ResultSet rs1 = stmt1.executeQuery();
@@ -28,19 +21,7 @@ public class TransactionService {
                 price = rs1.getInt("price");
             }
             tranDAO.addTransaction(userId, product_id, price);
-            this.updateAvailableBooksAfterCheckout(product_id);
-        }
-        else if(type.equalsIgnoreCase("Magazine")){
-            String query1 = "Select price from magazines where product_id = ?";
-            PreparedStatement stmt1 = DBconnector.conn.prepareStatement(query1);
-            stmt1.setInt(1, product_id);
-            ResultSet rs1 = stmt1.executeQuery();
-            int price = 0;
-            while (rs1.next()) {
-                price = rs1.getInt("price");
-            }
-            tranDAO.addTransaction(userId, product_id, price);
-            this.updateAvailableMagazinesAfterCheckout(product_id);
+            this.updateAvailableProductsAfterCheckout(product_id);
         }
     }
     public void updateTransactionUserId(int transactionId,int userId) throws SQLException{
@@ -49,8 +30,13 @@ public class TransactionService {
 
         else if(userService.getUserById(userId)==null)
             System.out.println("this User ID does not exist! ");
+
         else
             tranDAO.updateTransactionUserId(transactionId,userId);
+    }
+
+    private boolean checkIfTransactionBelongsToUser(int transactionId, int userId) throws SQLException {
+        return tranDAO.getTransactionById(transactionId).getUserId() == userId;
     }
 
     public void updateTransactionProductId(int transactionId,int product_id) throws SQLException{
@@ -58,6 +44,7 @@ public class TransactionService {
             System.out.println("this transaction does not exist! ");
         if(!isProductAvailable(product_id))
             System.out.println("this product ID does not exist! ");
+
         else
             tranDAO.updateTransactionProductId(transactionId,product_id);
     }
@@ -95,44 +82,56 @@ public class TransactionService {
     }
 
     public List<Transaction> getTransactionByProductId(int product_id) throws SQLException {
-        return tranDAO.getTransactionByProductId(product_id);
+        if(!isProductAvailable(product_id)) {
+            System.out.println("this product ID does not exist! ");
+            return null;
+        }
+        else
+            return tranDAO.getTransactionByProductId(product_id);
     }
 
     public List<Transaction> getTransactionByUserId(int userId) throws SQLException {
-        return tranDAO.getTransactionByUserId(userId);
+        if (userService.getUserById(userId) == null) {
+            System.out.println("This User ID does not exist!");
+            return null;
+        }
+        List<Transaction> transactions = tranDAO.getTransactionByUserId(userId);
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found for this User ID.");
+            return null;
+        }
+        else
+            return tranDAO.getTransactionByUserId(userId);
     }
 
     public Transaction getTransactionById(int transactionId) throws SQLException
     {
-        return tranDAO.getTransactionById(transactionId);
+        if (tranDAO.getTransactionById(transactionId)==null) {
+            System.out.println("this transaction does not exist! ");
+            return null;
+        }
+        else
+            return tranDAO.getTransactionById(transactionId);
     }
 
     public boolean isProductAvailable(int product_id) throws SQLException {
-        String query = "Select * from products where product_id = ?";
-        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
-        stmt.setInt(1, product_id);
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            String type = rs.getString("type");
-            return true;
-        }
-        return false;
+        return productService.isProductAvailable(product_id,1);
     }
 
-    public void updateAvailableBooksAfterCheckout(int product_id) throws SQLException {
-        BookService bookService = new BookService();
-        Book book = bookService.getBookById(product_id);
-        bookService.updateAvailableCopies(product_id, book.getAvailableBooks()-1);
-    }
-
-    public void updateAvailableMagazinesAfterCheckout(int product_id) throws SQLException {
-        MagazineService magazineService = new MagazineService();
-        Magazine magazine = magazineService.getMagazineById(product_id);
-        magazineService.updateAvailableCopies(product_id, magazine.getAvailableCopies()-1);
+    public void updateAvailableProductsAfterCheckout(int product_id) throws SQLException {
+        if(!isProductAvailable(product_id))
+            System.out.println("this product ID does not exist! ");
+        else
+            tranDAO.updateAvailableProductsAfterCheckout(product_id);
     }
 
     public int getAllSalesProduct(int product_id) throws SQLException {
-        return tranDAO.getProfitForProduct(product_id);
+        if(!isProductAvailable(product_id)) {
+            System.out.println("this product ID does not exist! ");
+            return 0;
+        }
+        else
+            return tranDAO.getProfitForProduct(product_id);
     }
 
     public int getAllRevenue() throws SQLException {

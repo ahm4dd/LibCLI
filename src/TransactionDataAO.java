@@ -186,4 +186,11 @@ public class TransactionDataAO {
         }
         return totalRevenue;
     }
+
+    public void updateAvailableProductsAfterCheckout(int product_id) throws SQLException {
+        String query="update products set available_copies = available_copies-1 where product_id = ? and available_copies > 0";
+        PreparedStatement stmt = DBconnector.conn.prepareStatement(query);
+        stmt.setInt(1, product_id);
+        stmt.executeUpdate();
+    }
 }
