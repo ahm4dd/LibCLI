@@ -11,7 +11,6 @@ public class Admin extends User {
   private AuthorService authorService = new AuthorService();
   private CategoryService categoryService = new CategoryService();
   private ProductService productService = new ProductService();
-  private String Product;
 
   Admin(int userId, String username, String password, String email, String userType) {
     super(userId, username, password, email, userType);
@@ -678,7 +677,7 @@ public class Admin extends User {
           categoryService.deleteCategory(categoryId);
       }
       if (option == 4) {
-        System.out.println("Enter how you want to search for category: 1.ID 2.Keyword 3.All categories: ");
+        System.out.println("Enter how you want to search for category: 1.ID 2.All categories 3.keyword: ");
         int option2 = scanner.nextInt();
         switch (option2) {
           case 1 -> {
