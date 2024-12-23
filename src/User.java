@@ -1,4 +1,5 @@
-abstract public class User {
+import java.sql.SQLException;
+abstract public class User implements Library {
     private int userId;
     private String username;
     private String password;
@@ -6,6 +7,13 @@ abstract public class User {
     private String userType;
 
 
+    public User(int userId, String username, String password, String email, String userType) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.userType = userType;
+    }
     public int getUserId() {
         return userId;
     }

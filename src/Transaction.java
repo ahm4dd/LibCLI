@@ -3,9 +3,18 @@ import java.util.Date;
 public class Transaction {
     private int transactionId;
     private int userId;
-    private int bookId;
+    private int product_id;
     private Date checkoutDate;
-    private Date returnDate;
+    private int cost;
+
+    Transaction(int transactionId, int userId, int product_id, Date checkoutDate,int cost) {
+        this.transactionId = transactionId;
+        this.userId = userId;
+        this.product_id = product_id;
+        this.checkoutDate = new Date();
+        this.cost=cost;
+    }
+
 
     public int getTransactionId() {
         return transactionId;
@@ -23,12 +32,12 @@ public class Transaction {
         this.userId = userId;
     }
 
-    public int getBookId() {
-        return bookId;
+    public int getProduct_id() {
+        return product_id;
     }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
     }
 
     public Date getCheckoutDate() {
@@ -39,11 +48,12 @@ public class Transaction {
         this.checkoutDate = checkoutDate;
     }
 
-    public Date getReturnDate() {
-        return returnDate;
+    public int getCost() {
+        return cost;
     }
 
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
+    public void setCost(int cost) {
+        this.cost = cost;
     }
+
 }
