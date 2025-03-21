@@ -1,4 +1,4 @@
-# Library Management System
+# LMS
 
 ## Overview
 The Library Management System is a command-line interface (CLI) application built in Java that provides a way to manage books, magazines, users, transactions, and reviews. This system offers a simple but powerful way to handle library operations through text-based commands.
